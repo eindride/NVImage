@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">NVImagecropView</string>
+    <string name="crop_top">Crop Top</string>
+    <string name="crop_bottom">Crop Bottom</string>
+    <string name="crop_left">Crop Left</string>
+    <string name="crop_right">Crop Right</string>
+    <string name="crop_1_1">1:1</string>
+    <string name="crop_4_3">4:3</string>
+    <string name="crop_3_4">3:4</string>
+    <string name="crop_5_7">5:7</string>
+    <string name="crop_7_5">7:5</string>
+    <string name="undo">Undo</string>
+
+</resources>
