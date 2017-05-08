@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Bitmap bmp;
     private Bitmap operation;
-
+    //CropCrina
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	//branch test
