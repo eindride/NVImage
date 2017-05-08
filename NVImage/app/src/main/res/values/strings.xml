@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">NVImage</string>
+    <string name="camera_button">Camera</string>
+    <string name="upload_button">Upload</string>
+    <string name="aboutus_button">About us</string>
+    <string name="title_activity_uploaded_picture_edit">NVImage</string>
+
+</resources>

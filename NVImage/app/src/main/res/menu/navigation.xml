@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_filtre"
+        android:icon="@mipmap/color"
+        android:title=""
+        />
+
+    <item
+        android:id="@+id/navigation_modif"
+        android:icon="@mipmap/crop"
+        android:title=""/>
+
+    <item
+        android:id="@+id/navigation_adv"
+        android:icon="@mipmap/adj"
+        android:title=""/>
+
+
+</menu>
