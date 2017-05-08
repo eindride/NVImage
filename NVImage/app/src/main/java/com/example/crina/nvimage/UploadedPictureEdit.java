@@ -144,7 +144,8 @@ public class UploadedPictureEdit extends AppCompatActivity {
             // im.setImageBitmap(applyFilter(currentFilter.toString(), cropedBmp));
             im.setImageBitmap(applyFilter(currentFilter.toString(),
                     applyDefaultCrop(whichCrop,
-                            rotateImage(currentAngle,original))));
+                            applyMirroring(currentMirror.toString(),
+                                rotateImage(currentAngle, original)))));
 
             currentCrop.delete(0, currentCrop.length());
             currentCrop.append(whichCrop);
@@ -287,7 +288,8 @@ public class UploadedPictureEdit extends AppCompatActivity {
 
             im.setImageBitmap(applyFilter(whichFilter,
                     applyDefaultCrop(currentCrop.toString(),
-                            rotateImage(currentAngle,original))));
+                            applyMirroring(currentMirror.toString(),
+                                    rotateImage(currentAngle, original)))));
 
             currentFilter.delete(0, currentFilter.length());
             currentFilter.append(whichFilter);
@@ -401,7 +403,8 @@ public class UploadedPictureEdit extends AppCompatActivity {
 
         im.setImageBitmap(applyFilter(currentFilter.toString(),
                 applyDefaultCrop(currentCrop.toString(),
-                        rotateImage(currentAngle,original))));
+                        applyMirroring(currentMirror.toString(),
+                                rotateImage(currentAngle, original)))));
         Element e = new Element(currentFilter,currentCrop,currentMirror, currentAngle);
         undoList.addLast(e);
 
@@ -422,8 +425,8 @@ public class UploadedPictureEdit extends AppCompatActivity {
 
         im.setImageBitmap(applyFilter(currentFilter.toString(),
                 applyDefaultCrop(currentCrop.toString(),
-                        rotateImage(currentAngle,
-                                applyMirroring(whichMirror,original)))));
+                        applyMirroring(whichMirror,
+                                rotateImage(currentAngle, original)))));
 
         currentMirror.delete(0, currentMirror.length());
         currentMirror.append(whichMirror);
@@ -498,7 +501,8 @@ public class UploadedPictureEdit extends AppCompatActivity {
 
         im.setImageBitmap(applyFilter(e.filter.toString().toString(),
                 applyDefaultCrop(e.crop.toString().toString(),
-                        rotateImage(e.angle,original))));
+                        applyMirroring(e.mirror.toString(),
+                                rotateImage(e.angle, original)))));
 
         currentCrop.delete(0,currentCrop.length());
         currentCrop.append(e.crop.toString());
@@ -533,7 +537,8 @@ public class UploadedPictureEdit extends AppCompatActivity {
 
             im.setImageBitmap(applyFilter(e.filter.toString().toString(),
                     applyDefaultCrop(e.crop.toString().toString(),
-                            rotateImage(e.angle,original))));
+                            applyMirroring(e.mirror.toString(),
+                                    rotateImage(e.angle, original)))));
 
             currentCrop.delete(0,currentCrop.length());
             currentCrop.append(e.crop.toString());
