@@ -104,6 +104,8 @@
                 <ImageButton
                     android:id="@+id/filtru3"
                     android:layout_marginRight="10dp"
+                    android:onClick="filterButtonAction"
+                    android:tag="Warmer"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/nvimagefiltre" />
@@ -111,18 +113,24 @@
                     android:id="@+id/filtru4"
                     android:layout_marginRight="10dp"
                     android:layout_width="80dp"
+                    android:onClick="filterButtonAction"
+                    android:tag="Cold"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/nvimagefiltre" />
                 <ImageButton
                     android:id="@+id/filtru5"
                     android:layout_marginRight="10dp"
                     android:layout_width="80dp"
+                    android:onClick="filterButtonAction"
+                    android:tag="AccentColor"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/nvimagefiltre" />
                 <ImageButton
                     android:id="@+id/filtru6"
                     android:layout_marginRight="10dp"
                     android:layout_width="80dp"
+                    android:onClick="filterButtonAction"
+                    android:tag="White"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/nvimagefiltre" />
 
@@ -174,7 +182,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:drawableTop="@drawable/custommhbutton"
+                    android:drawableTop="@drawable/custommvbutton"
                     android:onClick="mirrorButtonAction"
                     android:tag="Horizontal"
                     android:text="Horizontal"
@@ -184,7 +192,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:drawableTop="@drawable/custommvbutton"
+                    android:drawableTop="@drawable/custommhbutton"
                     android:onClick="mirrorButtonAction"
                     android:tag="Vertical"
                     android:text="Vertical"

@@ -311,11 +311,49 @@ public class UploadedPictureEdit extends AppCompatActivity {
                 filteredBmp = filterSepia(bmp);
                 break;
             }
+            case "Warmer":{
+                filteredBmp = filterWarmer(bmp);
+                break;
+            }
+            case "Cold":{
+                filteredBmp = filterCold(bmp);
+                break;
+            }
+            case "AccentColor":{
+                filteredBmp = filterAccentColor(bmp);
+                break;
+            }
+
+            case "White":{
+                filteredBmp = filterWhite(bmp);
+                break;
+            }
             default: {
                 filteredBmp = bmp;
             }
         }
         return filteredBmp;
+    }
+
+
+    public Bitmap filterWhite(Bitmap bmp) {
+        return createFilteredBitmap(bmp, 1.3f, 0, 0.32f, 0, 0,
+                0.11f, 1.3f, 0, 0, 0,
+                0, 0.23f, 1.3f, 0, 0,
+                0, 0, 0, 1, 0);
+    }
+    public Bitmap filterAccentColor(Bitmap bmp) {
+        return createFilteredBitmap(bmp, 1.3f, 0, 0, 0, 0,
+                0, 1.3f, 0, 0, 0,
+                0, 0, 1.3f, 0, 0,
+                0, 0, 0, 1, 0);
+    }
+
+    public Bitmap filterCold(Bitmap bmp) {
+        return createFilteredBitmap(bmp, 0.643f, 0.123f, 0, 0.11f, 0,
+                0, 0.508f, 0.23f, 0.12f, 0,
+                0.23f, 0, 0.503f, 0.12f, 0,
+                0, 0, 0, 1, 0);
     }
 
     public Bitmap filterGreyScale(Bitmap bmp) {
@@ -324,6 +362,14 @@ public class UploadedPictureEdit extends AppCompatActivity {
                 0.3f, 0.59f, 0.11f, 0, 0,
                 0, 0, 0, 1, 0);
     }
+    public Bitmap filterWarmer(Bitmap bmp) {
+        return createFilteredBitmap(bmp, 0.843f, 0, 0, 0, 0,
+                0, 0.708f, 0, 0, 0,
+                0, 0, 0.603f, 0, 0,
+                0, 0, 0, 1, 0);
+    }
+
+
 
     public void reverseFilterGreyScale(View view) {
         im.setImageBitmap(createFilteredBitmap(original, 1.32f, 0, 0, 0, 0,
