@@ -1,5 +1,8 @@
 package com.example.crina.nvimage;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -10,8 +13,10 @@ import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -20,8 +25,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Random;
 
 public class UploadedPictureEdit extends AppCompatActivity {
 
@@ -42,6 +50,12 @@ public class UploadedPictureEdit extends AppCompatActivity {
     float currentAngle=0;
     int currentStep=0;
     int maximumSteps=0;
+
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     private class Element {
         StringBuilder filter=new StringBuilder();
@@ -618,6 +632,54 @@ public class UploadedPictureEdit extends AppCompatActivity {
         maximumSteps++;
 
         im.setImageBitmap(original);
+    }
+    public void  saveButtonAction(View v){
+        verifyStoragePermissions(UploadedPictureEdit.this);
+    }
+
+    public void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );}
+
+        ImageView im = (ImageView) findViewById(R.id.imageView);
+        BitmapDrawable abmp = (BitmapDrawable) im.getDrawable();
+        Bitmap bm = abmp.getBitmap();
+        saveBitmap(bm);
+
+    }
+
+
+    private void saveBitmap(Bitmap bm) {
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/NVImage");
+        myDir.mkdirs();
+        Random generator = new Random();
+        int n = 10000;
+        n = generator.nextInt(n);
+        String fname = "Image-" + n + ".jpg";
+        File file = new File(myDir, fname);
+        //Log.i(TAG, "" + file);
+        if (file.exists())
+            file.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 }
