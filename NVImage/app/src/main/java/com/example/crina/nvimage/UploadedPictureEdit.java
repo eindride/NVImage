@@ -653,7 +653,7 @@ public class UploadedPictureEdit extends AppCompatActivity {
         BitmapDrawable abmp = (BitmapDrawable) im.getDrawable();
         Bitmap bm = abmp.getBitmap();
         saveBitmap(bm);
-
+        Log.d("asda","asf");
     }
 
 
