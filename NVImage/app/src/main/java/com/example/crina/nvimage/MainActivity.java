@@ -83,20 +83,21 @@ public class MainActivity extends AppCompatActivity {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode ) {
-            case SELECT_PICTURE:
-                Uri selectedImage = data.getData();
-                Intent intent2 = new Intent(this, UploadedPictureEdit.class);
-                intent2.putExtra("imgurl", selectedImage);
-                startActivity(intent2);
-                break;
-            case CAMERA_REQUEST:
-                Uri imageUri = Uri.parse(mCurrentPhotoPath);
-                Intent intent= new Intent(this,UploadedPictureEdit.class);
-                intent.putExtra("imgurl", imageUri);
-                startActivity(intent);
-                break;
+        if( data != null) {
+            switch (requestCode) {
+                case SELECT_PICTURE:
+                    Uri selectedImage = data.getData();
+                    Intent intent2 = new Intent(this, UploadedPictureEdit.class);
+                    intent2.putExtra("imgurl", selectedImage);
+                    startActivity(intent2);
+                    break;
+                case CAMERA_REQUEST:
+                    Uri imageUri = Uri.parse(mCurrentPhotoPath);
+                    Intent intent = new Intent(this, UploadedPictureEdit.class);
+                    intent.putExtra("imgurl", imageUri);
+                    startActivity(intent);
+                    break;
+            }
         }
 
 
