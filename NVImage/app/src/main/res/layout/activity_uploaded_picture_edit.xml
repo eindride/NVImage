@@ -84,78 +84,79 @@
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/filtru1"
+                    android:id="@+id/GreyScale"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:onClick="filterButtonAction"
                     android:tag="GreyScale"
-                    app:srcCompat="@drawable/nvimagefiltre" />
+                    app:srcCompat="@drawable/gray" />
 
                 <ImageButton
-                    android:id="@+id/filtru2"
+                    android:id="@+id/Sepia"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:onClick="filterButtonAction"
                     android:tag="Sepia"
-                    app:srcCompat="@drawable/nvimagefiltre" />
+                    app:srcCompat="@drawable/sepia" />
                 <ImageButton
-                    android:id="@+id/filtru3"
+                    android:id="@+id/Warmer"
                     android:layout_marginRight="10dp"
                     android:onClick="filterButtonAction"
                     android:tag="Warmer"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/nvimagefiltre" />
+                    app:srcCompat="@drawable/warmer" />
                 <ImageButton
-                    android:id="@+id/filtru4"
+                    android:id="@+id/Cold"
                     android:layout_marginRight="10dp"
                     android:layout_width="80dp"
                     android:onClick="filterButtonAction"
                     android:tag="Cold"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/nvimagefiltre" />
+                    app:srcCompat="@drawable/cold" />
                 <ImageButton
-                    android:id="@+id/filtru5"
+                    android:id="@+id/AccentColor"
                     android:layout_marginRight="10dp"
                     android:layout_width="80dp"
                     android:onClick="filterButtonAction"
                     android:tag="AccentColor"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/nvimagefiltre" />
+                    app:srcCompat="@drawable/accent" />
                 <ImageButton
-                    android:id="@+id/filtru6"
+                    android:id="@+id/White"
                     android:layout_marginRight="10dp"
                     android:layout_width="80dp"
                     android:onClick="filterButtonAction"
                     android:tag="White"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/nvimagefiltre" />
+                    app:srcCompat="@drawable/white" />
                 <ImageButton
-                    android:id="@+id/filtru7"
+                    android:id="@+id/Ghost"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:onClick="filterButtonAction"
                     android:tag="Ghost"
-                    app:srcCompat="@drawable/nvimagefiltre" />
+                    app:srcCompat="@drawable/ghost" />
                 <ImageButton
-                android:id="@+id/filtru8"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:onClick="filterButtonAction"
-                android:tag="Ice"
-                app:srcCompat="@drawable/nvimagefiltre" />
+                     android:id="@+id/Ice"
+                     android:layout_width="80dp"
+                     android:layout_height="wrap_content"
+                     android:layout_marginRight="10dp"
+                     android:onClick="filterButtonAction"
+                     android:tag="Ice"
+                     app:srcCompat="@drawable/ice" />
+
                 <ImageButton
-                    android:id="@+id/filtru9"
+                    android:id="@+id/TvShow"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:onClick="filterButtonAction"
                     android:tag="TvShow"
-                    app:srcCompat="@drawable/nvimagefiltre" />
+                    app:srcCompat="@drawable/tv" />
 
             </LinearLayout>
         </HorizontalScrollView>

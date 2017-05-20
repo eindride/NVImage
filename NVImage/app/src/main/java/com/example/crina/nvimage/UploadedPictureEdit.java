@@ -400,9 +400,9 @@ public class UploadedPictureEdit extends AppCompatActivity {
     }
 
     public Bitmap filterWhite(Bitmap bmp) {
-        return createFilteredBitmap(bmp, 0.643f, 0.123f, 0, 0.11f, 0,
-                0, 0.508f, 0.23f, 0.12f, 0,
-                0.23f, 0, 0.503f, 0.12f, 0,
+        return createFilteredBitmap(bmp, 0.943f, 0.423f, 0, 0.11f, 0,
+                0, 0.908f, 0.43f, 0.12f, 0,
+                0.43f, 0, 0.903f, 0.12f, 0,
                 0, 0, 0, 1, 0);
     }
     public Bitmap filterAccentColor(Bitmap bmp) {
