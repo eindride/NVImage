@@ -344,11 +344,35 @@ public class UploadedPictureEdit extends AppCompatActivity {
                 filteredBmp = filterWhite(bmp);
                 break;
             }
+            case "TvShow":{
+                filteredBmp = filterTvShow(bmp);
+                break;
+            }
             default: {
                 filteredBmp = bmp;
             }
         }
         return filteredBmp;
+    }
+
+    public Bitmap filterTvShow(Bitmap bmp) {
+        int[] pixels=new int[999999];
+        operation = Bitmap.createBitmap(bmp.getWidth(),bmp.getHeight(), bmp.getConfig());
+        for (int i = 1; i < bmp.getHeight()/10-1; i++) {
+            for(int j=1;j<bmp.getWidth()/10-1;j++) {
+                int avg=0;
+                bmp.getPixels(pixels, 0, bmp.getWidth(), j*10, i*10, 10, 10);
+                for(int q=0;q<10;q++) {
+                    avg += pixels[q];
+                }
+                avg/=100;
+                for(int q=0;q<10;q++) {
+                    pixels[q]=avg;
+                }
+                operation.setPixels(pixels, 0, bmp.getWidth(), j*10, i*10, 10, 10);
+            }
+        }
+        return operation;
     }
 
 

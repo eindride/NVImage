@@ -132,6 +132,14 @@
                     android:tag="White"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/nvimagefiltre" />
+                <ImageButton
+                    android:id="@+id/filtru9"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="80dp"
+                    android:onClick="filterButtonAction"
+                    android:tag="TvShow"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/nvimagefiltre" />
 
             </LinearLayout>
         </HorizontalScrollView>
