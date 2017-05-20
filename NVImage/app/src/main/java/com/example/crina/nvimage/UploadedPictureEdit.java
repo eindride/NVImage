@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -344,6 +345,14 @@ public class UploadedPictureEdit extends AppCompatActivity {
                 filteredBmp = filterWhite(bmp);
                 break;
             }
+            case "Ghost":{
+                filteredBmp = filterGhost(bmp);
+                break;
+            }
+            case "Ice":{
+                filteredBmp = filterIce(bmp);
+                break;
+            }
             default: {
                 filteredBmp = bmp;
             }
@@ -352,10 +361,24 @@ public class UploadedPictureEdit extends AppCompatActivity {
     }
 
 
+    public Bitmap filterIce(Bitmap bmp) {
+        return createFilteredBitmap(bmp, 0.23f, 1, 0, 0, 0,
+                0, 1, 0.44f, 0, 0,
+                0, 0.32f, 1, 0, 0,
+                1, 0, 0, 0.7f, 0);
+    }
+
+    public Bitmap filterGhost(Bitmap bmp) {
+        return createFilteredBitmap(bmp, 0, 1, 0, 0, 0,
+                0, 1, 0, 0, 0,
+                0, 0, 1, 0, 0,
+                1, 0, 0, 0, 0);
+    }
+
     public Bitmap filterWhite(Bitmap bmp) {
-        return createFilteredBitmap(bmp, 1.3f, 0, 0.32f, 0, 0,
-                0.11f, 1.3f, 0, 0, 0,
-                0, 0.23f, 1.3f, 0, 0,
+        return createFilteredBitmap(bmp, 0.643f, 0.123f, 0, 0.11f, 0,
+                0, 0.508f, 0.23f, 0.12f, 0,
+                0.23f, 0, 0.503f, 0.12f, 0,
                 0, 0, 0, 1, 0);
     }
     public Bitmap filterAccentColor(Bitmap bmp) {
@@ -634,6 +657,7 @@ public class UploadedPictureEdit extends AppCompatActivity {
         im.setImageBitmap(original);
     }
     public void  saveButtonAction(View v){
+        Toast.makeText(this, "Saved", Toast.LENGTH_LONG).show();
         verifyStoragePermissions(UploadedPictureEdit.this);
     }
 

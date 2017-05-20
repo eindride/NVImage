@@ -132,6 +132,22 @@
                     android:tag="White"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/nvimagefiltre" />
+                <ImageButton
+                    android:id="@+id/filtru7"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:onClick="filterButtonAction"
+                    android:tag="Ghost"
+                    app:srcCompat="@drawable/nvimagefiltre" />
+                <ImageButton
+                    android:id="@+id/filtru8"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:onClick="filterButtonAction"
+                    android:tag="Ice"
+                    app:srcCompat="@drawable/nvimagefiltre" />
 
             </LinearLayout>
         </HorizontalScrollView>
@@ -240,38 +256,36 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="button1" />
-
 
                 <Button
+                    android:id="@+id/button3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="button2" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="button3" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="button4" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="button5" />
-
+                    android:layout_marginLeft="18dp"
+                    android:background="@drawable/nvibutton"
+                    android:text="Contrast"
+                    android:textColor="@color/colorPrimary" />
 
                 <Button
                     android:id="@+id/button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="button6" />
+                    android:background="@drawable/nvibutton"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="5dp"
+                    android:text="RGB" />
+
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/nvibutton"
+                    android:text="Luminozitate"
+                    android:textColor="@color/colorPrimary" />
+
 
             </LinearLayout>
         </HorizontalScrollView>
