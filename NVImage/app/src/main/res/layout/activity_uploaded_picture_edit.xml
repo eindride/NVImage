@@ -141,12 +141,20 @@
                     android:tag="Ghost"
                     app:srcCompat="@drawable/nvimagefiltre" />
                 <ImageButton
-                    android:id="@+id/filtru8"
+                android:id="@+id/filtru8"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:onClick="filterButtonAction"
+                android:tag="Ice"
+                app:srcCompat="@drawable/nvimagefiltre" />
+                <ImageButton
+                    android:id="@+id/filtru9"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:onClick="filterButtonAction"
-                    android:tag="Ice"
+                    android:tag="TvShow"
                     app:srcCompat="@drawable/nvimagefiltre" />
 
             </LinearLayout>
