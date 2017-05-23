@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.crina.nvimage.cropActivity">
+
+    <ImageView
+        android:id="@+id/id"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/crop" />
+
+    <Button
+        android:id="@+id/B1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="defaultCropButtonAction"
+        android:tag="1:1"
+        android:text="1:1"
+        tools:layout_editor_absoluteY="327dp"
+        tools:layout_editor_absoluteX="8dp" />
+
+    <Button
+        android:id="@+id/B2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="defaultCropButtonAction"
+        android:tag="4:3"
+        android:text="4:3"
+        tools:layout_editor_absoluteY="392dp"
+        tools:layout_editor_absoluteX="8dp" />
+
+    <Button
+        android:id="@+id/B3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="3:4"
+        android:text="3:4"
+        tools:layout_editor_absoluteX="160dp"
+        tools:layout_editor_absoluteY="327dp" />
+
+    <Button
+        android:id="@+id/B4"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:onClick="defaultCropButtonAction"
+        android:tag="5:7"
+        android:text="5:7"
+        tools:layout_editor_absoluteY="392dp"
+        tools:layout_editor_absoluteX="160dp" />
+
+    <Button
+        android:id="@+id/B5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:onClick="defaultCropButtonAction"
+        android:tag="7:5"
+        android:text="7:5"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteY="392dp" />
+
+    <Button
+        android:id="@+id/back1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp"
+        android:onClick="xButtonAction"
+        android:text="X"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/back2" />
+
+    <Button
+        android:id="@+id/back2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-1dp"
+        android:layout_marginRight="148dp"
+        android:onClick="okButtonAction"
+        android:text="ok"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</android.support.constraint.ConstraintLayout>

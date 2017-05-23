@@ -2,6 +2,8 @@ package com.example.crina.nvimage;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -26,8 +28,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.net.URI;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Random;
@@ -36,6 +41,8 @@ public class UploadedPictureEdit extends AppCompatActivity {
 
     private TextView mTextMessage;
     ImageView im;
+    Uri path;
+
 
     GestureDetector gd;
     boolean tapped;
@@ -126,12 +133,13 @@ public class UploadedPictureEdit extends AppCompatActivity {
         Bundle extras= getIntent().getExtras();
         if(extras!=null)
         {
-            Uri path = (Uri) extras.get("imgurl");
+            path = (Uri) extras.get("imgurl");
             im.setImageURI(path);
+            BitmapDrawable abmp = (BitmapDrawable) im.getDrawable();
+            original = abmp.getBitmap();
         }
 
-        BitmapDrawable abmp = (BitmapDrawable) im.getDrawable();
-        original = abmp.getBitmap();
+
 
         undoList.add(new Element(currentFilter,currentCrop,currentMirror,currentAngle));
 
@@ -189,13 +197,87 @@ public class UploadedPictureEdit extends AppCompatActivity {
                 cropedBmp = defaultCrop34(bmp);
                 break;
             }
+            case "5:7":{
+                cropedBmp = defaultCrop57(bmp);
+                break;
+            }
+            case "7:5":{
+                cropedBmp = defaultCrop75(bmp);
+                break;
+            }
             default: {
                 cropedBmp = bmp;
             }
         }
         return cropedBmp;
     }
+    public Bitmap defaultCrop57(Bitmap bmp){
+        int dif;
+        int[] pixels=new int[1920000];
 
+        if(bmp.getWidth()<bmp.getHeight()){
+            int width=bmp.getWidth();
+            int height=7*width/5;
+            dif=bmp.getHeight()-height;
+            Log.d("dif", String.valueOf(dif));
+            operation = Bitmap.createBitmap(bmp.getWidth(),bmp.getHeight()-dif+1, bmp.getConfig());
+
+
+            for (int i = dif/2; i < bmp.getHeight()-dif/2; i++) {
+                bmp.getPixels(pixels, 0, bmp.getWidth(), 0, i, bmp.getWidth(), 1);
+                operation.setPixels(pixels, 0, bmp.getWidth(), 0, i-dif/2, bmp.getWidth(), 1);
+            }
+        }
+        else{
+            int height=bmp.getHeight();
+            int width=5*height/7;
+            dif=bmp.getWidth()-width;
+            Log.d("dif", String.valueOf(dif));
+            operation = Bitmap.createBitmap(bmp.getWidth()-dif,bmp.getHeight(), bmp.getConfig());
+
+
+            for (int i = 0; i < bmp.getHeight(); i++) {
+                bmp.getPixels(pixels, 0, bmp.getWidth()-dif, dif/2, i, bmp.getWidth()-dif, 1);
+                operation.setPixels(pixels, 0, bmp.getWidth()-dif, 0, i, bmp.getWidth()-dif, 1);
+            }
+        }
+        return operation;
+
+    }
+
+    public Bitmap defaultCrop75(Bitmap bmp){
+        int dif;
+        int[] pixels=new int[1920000];
+
+        if(bmp.getWidth()<bmp.getHeight()){
+            int width=bmp.getWidth();
+            int height=5*width/7;
+            dif=bmp.getHeight()-height;
+            Log.d("dif", String.valueOf(dif));
+            operation = Bitmap.createBitmap(bmp.getWidth(),bmp.getHeight()-dif+1, bmp.getConfig());
+
+
+            for (int i = dif/2; i < bmp.getHeight()-dif/2; i++) {
+                bmp.getPixels(pixels, 0, bmp.getWidth(), 0, i, bmp.getWidth(), 1);
+                operation.setPixels(pixels, 0, bmp.getWidth(), 0, i-dif/2, bmp.getWidth(), 1);
+            }
+        }
+        else{
+            int height=bmp.getHeight();
+            int width=7*height/5;
+            dif=bmp.getWidth()-width;
+            Log.d("dif", String.valueOf(dif));
+            operation = Bitmap.createBitmap(bmp.getWidth()-dif,bmp.getHeight(), bmp.getConfig());
+
+
+            for (int i = 0; i < bmp.getHeight(); i++) {
+                bmp.getPixels(pixels, 0, bmp.getWidth()-dif, dif/2, i, bmp.getWidth()-dif, 1);
+                operation.setPixels(pixels, 0, bmp.getWidth()-dif, 0, i, bmp.getWidth()-dif, 1);
+            }
+        }
+        return operation;
+
+    }
     public Bitmap defaultCrop11(Bitmap bmp) {
         int dif;
         int[] pixels = new int[1920000];
@@ -680,6 +762,19 @@ public class UploadedPictureEdit extends AppCompatActivity {
         Log.d("asda","asf");
     }
 
+    public void verifyStoragePermissions2(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );}
+    }
+
 
     private void saveBitmap(Bitmap bm) {
 
@@ -704,6 +799,76 @@ public class UploadedPictureEdit extends AppCompatActivity {
         }
 
 
+    }
+    public void saveTempFile(Bitmap bm){
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/NVImage");
+        myDir.mkdirs();
+
+        String fname = "TempFile.jpg";
+        File file = new File(myDir, fname);
+        if (file.exists())
+            file.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void cropButtonAction(View v){
+
+        verifyStoragePermissions2(UploadedPictureEdit.this);
+
+        ImageView im = (ImageView) findViewById(R.id.imageView);
+        BitmapDrawable abmp = (BitmapDrawable) im.getDrawable();
+        Bitmap bm = abmp.getBitmap();
+
+        saveTempFile(bm);
+
+        File file = new File(Environment.getExternalStorageDirectory(), "NVImage/TempFile.jpg");
+        Uri fileURI = Uri.fromFile(file);
+
+        Intent intent = new Intent(this, cropActivity.class);
+        intent.putExtra("imgurl", fileURI);
+        startActivityForResult(intent,1);
+
+
+    }
+    public void putTempFileInImageView(){
+        File file = new File(Environment.getExternalStorageDirectory(), "NVImage/TempFile.jpg");
+        Uri fileURI = Uri.fromFile(file);
+
+        ImageView img = (ImageView) findViewById(R.id.imageView);
+        img.setImageURI(fileURI);
+        file.delete();
+
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            switch (requestCode) {
+                case 1:
+                    String whichCrop = data.getExtras().getString("whichCrop");
+                    Log.d("Crop :", whichCrop);
+                    putTempFileInImageView();
+                    currentCrop.delete(0, currentCrop.length());
+                    currentCrop.append(whichCrop);
+                    Log.d("Crop :", currentCrop.toString());
+                    Element e = new Element(currentFilter, currentCrop,currentMirror,currentAngle);
+                    undoList.addLast(e);
+
+                    checkSteps();
+
+                    currentStep++;
+                    maximumSteps++;
+                    break;
+                case 2:
+                    break;
+            }
+        }
     }
 
 }
