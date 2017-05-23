@@ -37,7 +37,10 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".cropActivity"></activity>
+        <activity android:name=".cropActivity" />
+        <activity android:name=".rgbActivity" />
+        <activity android:name=".contrastActivity" />
+        <activity android:name=".brightnessActivity"></activity>
     </application>
 
 </manifest>

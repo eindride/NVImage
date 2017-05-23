@@ -273,6 +273,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="18dp"
                     android:background="@drawable/nvibutton"
+                    android:onClick="contrastButtonAction"
                     android:text="Contrast"
                     android:textColor="@color/colorPrimary" />
 
@@ -280,11 +281,12 @@
                     android:id="@+id/button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/nvibutton"
-                    android:textColor="@color/colorPrimary"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="5dp"
-                    android:text="RGB" />
+                    android:background="@drawable/nvibutton"
+                    android:onClick="rgbButtonAction"
+                    android:text="RGB"
+                    android:textColor="@color/colorPrimary" />
 
                 <Button
                     android:id="@+id/button2"
@@ -293,6 +295,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="5dp"
                     android:background="@drawable/nvibutton"
+                    android:onClick="brightnessButtonAction"
                     android:text="Luminozitate"
                     android:textColor="@color/colorPrimary" />
 

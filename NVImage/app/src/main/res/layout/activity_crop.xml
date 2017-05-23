@@ -8,86 +8,106 @@
 
     <ImageView
         android:id="@+id/id"
-        android:layout_width="wrap_content"
+        android:layout_width="325dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/crop" />
+        app:srcCompat="@mipmap/crop"
+        app:layout_constraintHorizontal_bias="0.508"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/B5" />
 
     <Button
         android:id="@+id/B1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="86dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="16dp"
         android:onClick="defaultCropButtonAction"
         android:tag="1:1"
         android:text="1:1"
-        tools:layout_editor_absoluteY="327dp"
-        tools:layout_editor_absoluteX="8dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/B2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="86dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="0dp"
         android:onClick="defaultCropButtonAction"
         android:tag="4:3"
         android:text="4:3"
-        tools:layout_editor_absoluteY="392dp"
-        tools:layout_editor_absoluteX="8dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/B1" />
 
     <Button
         android:id="@+id/B3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="86dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginRight="84dp"
+        android:onClick="defaultCropButtonAction"
         android:tag="3:4"
         android:text="3:4"
-        tools:layout_editor_absoluteX="160dp"
-        tools:layout_editor_absoluteY="327dp" />
+        app:layout_constraintBottom_toTopOf="@+id/B2"
+        app:layout_constraintRight_toLeftOf="@+id/B5" />
 
     <Button
         android:id="@+id/B4"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="86dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="0dp"
         android:onClick="defaultCropButtonAction"
         android:tag="5:7"
         android:text="5:7"
-        tools:layout_editor_absoluteY="392dp"
-        tools:layout_editor_absoluteX="160dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/B1" />
 
     <Button
         android:id="@+id/B5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="86dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="0dp"
         android:onClick="defaultCropButtonAction"
         android:tag="7:5"
         android:text="7:5"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteY="392dp" />
+        app:layout_constraintBottom_toTopOf="@+id/B4"
+        android:layout_marginRight="55dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/back1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="8dp"
         android:onClick="xButtonAction"
-        android:text="X"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/back2" />
+        app:layout_constraintRight_toLeftOf="@+id/back2"
+        app:srcCompat="@drawable/x" />
 
-    <Button
+    <ImageButton
         android:id="@+id/back2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="-1dp"
-        android:layout_marginRight="148dp"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
         android:onClick="okButtonAction"
-        android:text="ok"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/ok" />
 </android.support.constraint.ConstraintLayout>

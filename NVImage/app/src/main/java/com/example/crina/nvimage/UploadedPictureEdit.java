@@ -50,6 +50,11 @@ public class UploadedPictureEdit extends AppCompatActivity {
     private Bitmap original;
     private Bitmap operation;
 
+    private static final int CROP_ACTIVITY = 1;
+    private static final int RGB_ACTIVITY = 2;
+    private static final int BRIGHTNESS_ACTIVITY = 3;
+    private static final int CONTRAST_ACTIVITY = 4;
+
     //float angle = 0;
 
     StringBuilder currentFilter = new StringBuilder("none");
@@ -857,7 +862,65 @@ public class UploadedPictureEdit extends AppCompatActivity {
 
         Intent intent = new Intent(this, cropActivity.class);
         intent.putExtra("imgurl", fileURI);
-        startActivityForResult(intent,1);
+        startActivityForResult(intent,CROP_ACTIVITY);
+
+
+    }
+
+    public void rgbButtonAction(View v){
+
+        verifyStoragePermissions2(UploadedPictureEdit.this);
+
+        ImageView im = (ImageView) findViewById(R.id.imageView);
+        BitmapDrawable abmp = (BitmapDrawable) im.getDrawable();
+        Bitmap bm = abmp.getBitmap();
+
+        saveTempFile(bm);
+
+        File file = new File(Environment.getExternalStorageDirectory(), "NVImage/TempFile.jpg");
+        Uri fileURI = Uri.fromFile(file);
+
+        Intent intent = new Intent(this, rgbActivity.class);
+        intent.putExtra("imgurl", fileURI);
+        startActivityForResult(intent,RGB_ACTIVITY);
+
+
+    }
+    public void contrastButtonAction(View v){
+
+        verifyStoragePermissions2(UploadedPictureEdit.this);
+
+        ImageView im = (ImageView) findViewById(R.id.imageView);
+        BitmapDrawable abmp = (BitmapDrawable) im.getDrawable();
+        Bitmap bm = abmp.getBitmap();
+
+        saveTempFile(bm);
+
+        File file = new File(Environment.getExternalStorageDirectory(), "NVImage/TempFile.jpg");
+        Uri fileURI = Uri.fromFile(file);
+
+        Intent intent = new Intent(this, contrastActivity.class);
+        intent.putExtra("imgurl", fileURI);
+        startActivityForResult(intent,CONTRAST_ACTIVITY);
+
+
+    }
+    public void brightnessButtonAction(View v){
+
+        verifyStoragePermissions2(UploadedPictureEdit.this);
+
+        ImageView im = (ImageView) findViewById(R.id.imageView);
+        BitmapDrawable abmp = (BitmapDrawable) im.getDrawable();
+        Bitmap bm = abmp.getBitmap();
+
+        saveTempFile(bm);
+
+        File file = new File(Environment.getExternalStorageDirectory(), "NVImage/TempFile.jpg");
+        Uri fileURI = Uri.fromFile(file);
+
+        Intent intent = new Intent(this, brightnessActivity.class);
+        intent.putExtra("imgurl", fileURI);
+        startActivityForResult(intent,BRIGHTNESS_ACTIVITY);
 
 
     }
@@ -866,6 +929,7 @@ public class UploadedPictureEdit extends AppCompatActivity {
         Uri fileURI = Uri.fromFile(file);
 
         ImageView img = (ImageView) findViewById(R.id.imageView);
+        img.setImageURI(null);
         img.setImageURI(fileURI);
         file.delete();
 
@@ -874,7 +938,7 @@ public class UploadedPictureEdit extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
             switch (requestCode) {
-                case 1:
+                case CROP_ACTIVITY:
                     String whichCrop = data.getExtras().getString("whichCrop");
                     Log.d("Crop :", whichCrop);
                     putTempFileInImageView();
@@ -889,7 +953,45 @@ public class UploadedPictureEdit extends AppCompatActivity {
                     currentStep++;
                     maximumSteps++;
                     break;
-                case 2:
+                case RGB_ACTIVITY:
+                    int whichRGB = data.getExtras().getInt("whichRGB");
+                    Log.d("RGB:", "sdf");
+                    putTempFileInImageView();
+
+                    Element el = new Element(currentFilter, currentCrop,currentMirror,currentAngle);
+                    undoList.addLast(el);
+
+                    checkSteps();
+
+                    currentStep++;
+                    maximumSteps++;
+                    break;
+
+                case CONTRAST_ACTIVITY:
+                    int whichContrast = data.getExtras().getInt("whichContrast");
+                    Log.d("Contrast :", "ccosdnf");
+                    putTempFileInImageView();
+
+                    Element e2 = new Element(currentFilter, currentCrop,currentMirror,currentAngle);
+                    undoList.addLast(e2);
+
+                    checkSteps();
+
+                    currentStep++;
+                    maximumSteps++;
+                    break;
+                case BRIGHTNESS_ACTIVITY:
+                    int whichBRI = data.getExtras().getInt("whichBRI");
+                    Log.d("BRI :", " dafgsk");
+                    putTempFileInImageView();
+
+                    Element e3 = new Element(currentFilter, currentCrop,currentMirror,currentAngle);
+                    undoList.addLast(e3);
+
+                    checkSteps();
+
+                    currentStep++;
+                    maximumSteps++;
                     break;
             }
         }
