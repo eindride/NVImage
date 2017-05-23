@@ -435,11 +435,35 @@ public class UploadedPictureEdit extends AppCompatActivity {
                 filteredBmp = filterIce(bmp);
                 break;
             }
+            case "TvShow":{
+                filteredBmp = filterTvShow(bmp);
+                break;
+            }
             default: {
                 filteredBmp = bmp;
             }
         }
         return filteredBmp;
+    }
+
+    public Bitmap filterTvShow(Bitmap bmp) {
+        int[] pixels=new int[999999];
+        operation = Bitmap.createBitmap(bmp.getWidth(),bmp.getHeight(), bmp.getConfig());
+        for (int i = 1; i < bmp.getHeight()/10-1; i++) {
+            for(int j=1;j<bmp.getWidth()/10-1;j++) {
+                int avg=0;
+                bmp.getPixels(pixels, 0, bmp.getWidth(), j*10, i*10, 10, 10);
+                for(int q=0;q<10;q++) {
+                    avg += pixels[q];
+                }
+                avg/=100;
+                for(int q=0;q<10;q++) {
+                    pixels[q]=avg;
+                }
+                operation.setPixels(pixels, 0, bmp.getWidth(), j*10, i*10, 10, 10);
+            }
+        }
+        return operation;
     }
 
 
@@ -458,9 +482,9 @@ public class UploadedPictureEdit extends AppCompatActivity {
     }
 
     public Bitmap filterWhite(Bitmap bmp) {
-        return createFilteredBitmap(bmp, 0.643f, 0.123f, 0, 0.11f, 0,
-                0, 0.508f, 0.23f, 0.12f, 0,
-                0.23f, 0, 0.503f, 0.12f, 0,
+        return createFilteredBitmap(bmp, 0.943f, 0.423f, 0, 0.11f, 0,
+                0, 0.908f, 0.43f, 0.12f, 0,
+                0.43f, 0, 0.903f, 0.12f, 0,
                 0, 0, 0, 1, 0);
     }
     public Bitmap filterAccentColor(Bitmap bmp) {
