@@ -128,7 +128,7 @@ public class cropActivity extends AppCompatActivity {
         if (bmp.getWidth() < bmp.getHeight()) {
             int width = bmp.getWidth();
             int height = 3 * width / 4;
-            dif = bmp.getHeight() - height;
+            dif = Math.abs(bmp.getHeight() - height);
             Log.d("dif", String.valueOf(dif));
             operation = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight() - dif + 1, bmp.getConfig());
 
@@ -140,7 +140,7 @@ public class cropActivity extends AppCompatActivity {
         } else {
             int height = bmp.getHeight();
             int width = 4 * height / 3;
-            dif = bmp.getWidth() - width;
+            dif = Math.abs(bmp.getWidth() - width);
             Log.d("dif", String.valueOf(dif));
             operation = Bitmap.createBitmap(bmp.getWidth() - dif, bmp.getHeight(), bmp.getConfig());
 
@@ -163,7 +163,7 @@ public class cropActivity extends AppCompatActivity {
         if (bmp.getWidth() < bmp.getHeight()) {
             int width = bmp.getWidth();
             int height = 4 * width / 3;
-            dif = bmp.getHeight() - height;
+            dif = Math.abs(bmp.getHeight() - height);
             Log.d("dif", String.valueOf(dif));
             operation = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight() - dif + 1, bmp.getConfig());
 
@@ -175,7 +175,7 @@ public class cropActivity extends AppCompatActivity {
         } else {
             int height = bmp.getHeight();
             int width = 3 * height / 4;
-            dif = bmp.getWidth() - width;
+            dif = Math.abs(bmp.getWidth() - width);
             Log.d("dif", String.valueOf(dif));
             operation = Bitmap.createBitmap(bmp.getWidth() - dif, bmp.getHeight(), bmp.getConfig());
 
@@ -197,7 +197,7 @@ public class cropActivity extends AppCompatActivity {
         if(bmp.getWidth()<bmp.getHeight()){
             int width=bmp.getWidth();
             int height=7*width/5;
-            dif=bmp.getHeight()-height;
+            dif=Math.abs(bmp.getHeight()-height);
             Log.d("dif", String.valueOf(dif));
             operation = Bitmap.createBitmap(bmp.getWidth(),bmp.getHeight()-dif+1, bmp.getConfig());
 
@@ -210,7 +210,7 @@ public class cropActivity extends AppCompatActivity {
         else{
             int height=bmp.getHeight();
             int width=5*height/7;
-            dif=bmp.getWidth()-width;
+            dif=Math.abs(bmp.getWidth()-width);
             Log.d("dif", String.valueOf(dif));
             operation = Bitmap.createBitmap(bmp.getWidth()-dif,bmp.getHeight(), bmp.getConfig());
 
@@ -244,7 +244,7 @@ public class cropActivity extends AppCompatActivity {
         else{
             int height=bmp.getHeight();
             int width=7*height/5;
-            dif=bmp.getWidth()-width;
+            dif=Math.abs(bmp.getWidth()-width);
             Log.d("dif", String.valueOf(dif));
             operation = Bitmap.createBitmap(bmp.getWidth()-dif,bmp.getHeight(), bmp.getConfig());
 

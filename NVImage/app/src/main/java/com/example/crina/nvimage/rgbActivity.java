@@ -169,8 +169,9 @@ public class rgbActivity extends AppCompatActivity {
 
         saveTempFile(bmp);
 
+        float[] colorArray={redValue,greenValue,blueValue};
         Intent intent = new Intent(this,UploadedPictureEdit.class);
-        intent.putExtra("whichRGB",1);
+        intent.putExtra("whichRGB",colorArray);
         setResult(Activity.RESULT_OK, intent);
         finish();
     }

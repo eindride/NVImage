@@ -129,8 +129,9 @@ public class contrastActivity extends AppCompatActivity {
 
         saveTempFile(bmp);
 
+        float[] colorArray={redValue,greenValue,blueValue};
         Intent intent = new Intent(this,UploadedPictureEdit.class);
-        intent.putExtra("whichContrast",1);
+        intent.putExtra("whichContrast",colorArray);
         setResult(Activity.RESULT_OK, intent);
         finish();
     }

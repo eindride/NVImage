@@ -125,7 +125,7 @@ public class brightnessActivity extends AppCompatActivity {
         saveTempFile(bmp);
 
         Intent intent = new Intent(this,UploadedPictureEdit.class);
-        intent.putExtra("whichBri",1);
+        intent.putExtra("whichBRI",brightness);
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
