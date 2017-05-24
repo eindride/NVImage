@@ -24,32 +24,31 @@ import java.io.FileOutputStream;
 public class rgbActivity extends AppCompatActivity {
 
     Bitmap original;
-    Bitmap operation;
-    int rgb;
+
     float redValue = 1;
     float greenValue = 1;
     float blueValue = 1;
-    ImageView img;
+
+    ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rgb);
 
+        imageView = (ImageView) findViewById(R.id.imageView2);
 
-        img = (ImageView) findViewById(R.id.imageView2);
-
-        Bundle extras= getIntent().getExtras();
-        if(extras!=null)
-        {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
             Uri path = (Uri) extras.get("imgurl");
-            img.setImageURI(path);
+            imageView.setImageURI(path);
             File file = new File(Environment.getExternalStorageDirectory(), "NVImage/TempFile.jpg");
             file.delete();
         }
-        BitmapDrawable abmp = (BitmapDrawable) img.getDrawable();
+        BitmapDrawable abmp = (BitmapDrawable) imageView.getDrawable();
         original = abmp.getBitmap();
 
-        final SeekBar seekBarRed=(SeekBar) findViewById(R.id.seekBarRed);
+        final SeekBar seekBarRed = (SeekBar) findViewById(R.id.seekBarRed);
         seekBarRed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar seekBarRed) {
@@ -62,15 +61,16 @@ public class rgbActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onProgressChanged(SeekBar seekBarRed, int progress,boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBarRed, int progress, boolean fromUser) {
                 // TODO Auto-generated method stub
 
-                Log.d("SOMETHING", String.valueOf((progress-100)*(0.01f)));
-                redValue=1+(progress-100)*(0.01f);
+                Log.d("SOMETHING", String.valueOf((progress - 100) * (0.01f)));
+                redValue = 1 + (progress - 100) * (0.01f);
                 applyColorChange();
-            }});
+            }
+        });
 
-        final SeekBar seekBarGreen=(SeekBar) findViewById(R.id.seekBarGreen);
+        final SeekBar seekBarGreen = (SeekBar) findViewById(R.id.seekBarGreen);
         seekBarGreen.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar seekBarGreen) {
@@ -83,15 +83,16 @@ public class rgbActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onProgressChanged(SeekBar seekBarGreen, int progress,boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBarGreen, int progress, boolean fromUser) {
                 // TODO Auto-generated method stub
 
-                Log.d("SOMETHING", String.valueOf((progress-100)*(0.01f)));
-                greenValue=1+(progress-100)*(0.01f);
+                Log.d("SOMETHING", String.valueOf((progress - 100) * (0.01f)));
+                greenValue = 1 + (progress - 100) * (0.01f);
                 applyColorChange();
-            }});
+            }
+        });
 
-        final SeekBar seekBarBlue=(SeekBar) findViewById(R.id.seekBarBlue);
+        final SeekBar seekBarBlue = (SeekBar) findViewById(R.id.seekBarBlue);
         seekBarBlue.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar seekBarBlue) {
@@ -104,22 +105,25 @@ public class rgbActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onProgressChanged(SeekBar seekBarBlue, int progress,boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBarBlue, int progress, boolean fromUser) {
                 // TODO Auto-generated method stub
 
-                Log.d("SOMETHING", String.valueOf((progress-100)*(0.01f)));
-                blueValue=1+(progress-100)*(0.01f);
+                Log.d("SOMETHING", String.valueOf((progress - 100) * (0.01f)));
+                blueValue = 1 + (progress - 100) * (0.01f);
                 applyColorChange();
-            }});
+            }
+        });
 
 
     }
+
     public void applyColorChange() {
-        img.setImageBitmap(createFilteredBitmap(original, redValue, 0, 0, 0, 0,
+        imageView.setImageBitmap(createFilteredBitmap(original, redValue, 0, 0, 0, 0,
                 0, greenValue, 0, 0, 0,
                 0, 0, blueValue, 0, 0,
                 0, 0, 0, 1, 0));
     }
+
     private Bitmap createFilteredBitmap(Bitmap src, float a, float b, float c, float d, float e,
                                         float f, float g, float h, float i, float j,
                                         float k, float l, float m, float n, float o,
@@ -144,7 +148,8 @@ public class rgbActivity extends AppCompatActivity {
 
         return bitmap;
     }
-    public void saveTempFile(Bitmap bm){
+
+    public void saveTempFile(Bitmap bm) {
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root + "/NVImage");
         myDir.mkdirs();
@@ -162,21 +167,22 @@ public class rgbActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    public void okButtonAction(View view){
-        img = (ImageView) findViewById(R.id.imageView2);
-        BitmapDrawable abmp = (BitmapDrawable) img.getDrawable();
+
+    public void okButtonAction(View view) {
+        imageView = (ImageView) findViewById(R.id.imageView2);
+        BitmapDrawable abmp = (BitmapDrawable) imageView.getDrawable();
         Bitmap bmp = abmp.getBitmap();
 
         saveTempFile(bmp);
 
-        float[] colorArray={redValue,greenValue,blueValue};
-        Intent intent = new Intent(this,UploadedPictureEdit.class);
-        intent.putExtra("whichRGB",colorArray);
+        float[] colorArray = {redValue, greenValue, blueValue};
+        Intent intent = new Intent(this, UploadedPictureEdit.class);
+        intent.putExtra("whichRGB", colorArray);
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
-    public void xButtonAction(View view){
+
+    public void xButtonAction(View view) {
         finish();
     }
-
 }

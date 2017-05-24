@@ -24,32 +24,30 @@ import java.io.FileOutputStream;
 public class contrastActivity extends AppCompatActivity {
 
     Bitmap original;
-    Bitmap operation;
-    int contrast;
-    ImageView img;
+    ImageView imageView;
 
     float redValue = 1;
     float greenValue = 1;
     float blueValue = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contrast);
 
-        img = (ImageView) findViewById(R.id.imageView3);
+        imageView = (ImageView) findViewById(R.id.imageView3);
 
-        Bundle extras= getIntent().getExtras();
-        if(extras!=null)
-        {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
             Uri path = (Uri) extras.get("imgurl");
-            img.setImageURI(path);
+            imageView.setImageURI(path);
             File file = new File(Environment.getExternalStorageDirectory(), "NVImage/TempFile.jpg");
             file.delete();
         }
-        BitmapDrawable abmp = (BitmapDrawable) img.getDrawable();
+        BitmapDrawable abmp = (BitmapDrawable) imageView.getDrawable();
         original = abmp.getBitmap();
 
-        final SeekBar seekBarContrast=(SeekBar) findViewById(R.id.seekBar);
+        final SeekBar seekBarContrast = (SeekBar) findViewById(R.id.seekBar);
         seekBarContrast.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar seekBarContrast) {
@@ -62,19 +60,20 @@ public class contrastActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onProgressChanged(SeekBar seekBarContrast, int progress,boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBarContrast, int progress, boolean fromUser) {
                 // TODO Auto-generated method stub
 
-                Log.d("SOMETHING", String.valueOf((progress-100)*(0.01f)));
-                redValue=1+(progress-100)*(0.01f);
-                greenValue=1+(progress-100)*(0.01f);
-                blueValue=1+(progress-100)*(0.01f);
+                Log.d("SOMETHING", String.valueOf((progress - 100) * (0.01f)));
+                redValue = 1 + (progress - 100) * (0.01f);
+                greenValue = 1 + (progress - 100) * (0.01f);
+                blueValue = 1 + (progress - 100) * (0.01f);
                 applyColorChange();
-            }});
+            }
+        });
     }
 
     public void applyColorChange() {
-        img.setImageBitmap(createFilteredBitmap(original, redValue, 0, 0, 0, 0,
+        imageView.setImageBitmap(createFilteredBitmap(original, redValue, 0, 0, 0, 0,
                 0, greenValue, 0, 0, 0,
                 0, 0, blueValue, 0, 0,
                 0, 0, 0, 1, 0));
@@ -104,7 +103,8 @@ public class contrastActivity extends AppCompatActivity {
 
         return bitmap;
     }
-    public void saveTempFile(Bitmap bm){
+
+    public void saveTempFile(Bitmap bm) {
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root + "/NVImage");
         myDir.mkdirs();
@@ -122,20 +122,22 @@ public class contrastActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    public void okButtonAction(View view){
-        img = (ImageView) findViewById(R.id.imageView3);
-        BitmapDrawable abmp = (BitmapDrawable) img.getDrawable();
+
+    public void okButtonAction(View view) {
+        imageView = (ImageView) findViewById(R.id.imageView3);
+        BitmapDrawable abmp = (BitmapDrawable) imageView.getDrawable();
         Bitmap bmp = abmp.getBitmap();
 
         saveTempFile(bmp);
 
-        float[] colorArray={redValue,greenValue,blueValue};
-        Intent intent = new Intent(this,UploadedPictureEdit.class);
-        intent.putExtra("whichContrast",colorArray);
+        float[] colorArray = {redValue, greenValue, blueValue};
+        Intent intent = new Intent(this, UploadedPictureEdit.class);
+        intent.putExtra("whichContrast", colorArray);
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
-    public void xButtonAction(View view){
+
+    public void xButtonAction(View view) {
         finish();
     }
 

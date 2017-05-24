@@ -24,14 +24,12 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int CAMERA_REQUEST = 1888;
     private static final int SELECT_PICTURE = 100;
-    private static final String TAG = "MainActivity";
-
+    String mCurrentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         ImageButton buton1 = (ImageButton) this.findViewById(R.id.camera);
         buton1.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                     // Continue only if the File was successfully created
                     if (photoFile != null) {
-
                         Uri photoURI = null;
                         try {
                             photoURI = FileProvider.getUriForFile(MainActivity.this,
@@ -77,13 +74,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), SELECT_PICTURE);
             }
         });
-
     }
-
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if( data != null) {
+        if (data != null) {
             switch (requestCode) {
                 case SELECT_PICTURE:
                     Uri selectedImage = data.getData();
@@ -99,10 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
-
-
     }
-    String mCurrentPhotoPath;
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -119,5 +111,4 @@ public class MainActivity extends AppCompatActivity {
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
-
 }

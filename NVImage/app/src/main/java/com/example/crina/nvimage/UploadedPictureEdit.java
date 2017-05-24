@@ -39,13 +39,8 @@ import java.util.Random;
 
 public class UploadedPictureEdit extends AppCompatActivity {
 
-    private TextView mTextMessage;
-    ImageView im;
+    ImageView imageView;
     Uri path;
-
-
-    GestureDetector gd;
-    boolean tapped;
 
     private Bitmap original;
     private Bitmap operation;
@@ -55,21 +50,20 @@ public class UploadedPictureEdit extends AppCompatActivity {
     private static final int BRIGHTNESS_ACTIVITY = 3;
     private static final int CONTRAST_ACTIVITY = 4;
 
-    //float angle = 0;
-
     StringBuilder currentFilter = new StringBuilder("none");
     StringBuilder currentCrop = new StringBuilder("none");
     StringBuilder currentMirror = new StringBuilder("none");
-    float currentAngle=0;
-    float currentContrastRedValue=1;
-    float currentContrastGreenValue=1;
-    float currentContrastBlueValue=1;
-    float currentRgbRedValue=1;
-    float currentRgbGreenValue=1;
-    float currentRgbBlueValue=1;
-    int currentBrightness=0;
-    int currentStep=0;
-    int maximumSteps=0;
+    float currentAngle = 0;
+    float currentContrastRedValue = 1;
+    float currentContrastGreenValue = 1;
+    float currentContrastBlueValue = 1;
+    float currentRgbRedValue = 1;
+    float currentRgbGreenValue = 1;
+    float currentRgbBlueValue = 1;
+    int currentBrightness = 0;
+
+    int currentStep = 0;
+    int maximumSteps = 0;
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -78,9 +72,9 @@ public class UploadedPictureEdit extends AppCompatActivity {
     };
 
     private class Element {
-        StringBuilder filter=new StringBuilder();
-        StringBuilder crop=new StringBuilder();
-        StringBuilder mirror=new StringBuilder();
+        StringBuilder filter = new StringBuilder();
+        StringBuilder crop = new StringBuilder();
+        StringBuilder mirror = new StringBuilder();
         float angle;
         float contrastRedValue;
         float contrastGreenValue;
@@ -90,21 +84,20 @@ public class UploadedPictureEdit extends AppCompatActivity {
         float rgbBlueValue;
         int brightness;
 
-
-        public Element(StringBuilder filter,StringBuilder crop,StringBuilder mirror,float angle,
-                       float contrastRedValue,float contrastGreenValue,float contrastBlueValue,
+        public Element(StringBuilder filter, StringBuilder crop, StringBuilder mirror, float angle,
+                       float contrastRedValue, float contrastGreenValue, float contrastBlueValue,
                        float rgbRedValue, float rgbGreenValue, float rgbBlueValue, int brightness) {
             this.filter.append(filter);
             this.crop.append(crop);
             this.mirror.append(mirror);
-            this.angle=angle;
-            this.contrastRedValue=contrastRedValue;
-            this.contrastGreenValue=contrastGreenValue;
-            this.contrastBlueValue=contrastBlueValue;
-            this.rgbRedValue=rgbRedValue;
-            this.rgbGreenValue=rgbGreenValue;
-            this.rgbBlueValue=rgbBlueValue;
-            this.brightness=brightness;
+            this.angle = angle;
+            this.contrastRedValue = contrastRedValue;
+            this.contrastGreenValue = contrastGreenValue;
+            this.contrastBlueValue = contrastBlueValue;
+            this.rgbRedValue = rgbRedValue;
+            this.rgbGreenValue = rgbGreenValue;
+            this.rgbBlueValue = rgbBlueValue;
+            this.brightness = brightness;
         }
     }
 
@@ -116,25 +109,25 @@ public class UploadedPictureEdit extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-            View a = findViewById(R.id.linearLayoutHome);
-            View b = findViewById(R.id.linearLayoutDash);
-            View c = findViewById(R.id.linearLayoutNot);
+            View viewNavigatonFilters = findViewById(R.id.linearLayoutHome);
+            View viewNavigationModif = findViewById(R.id.linearLayoutDash);
+            View viewNavigationAdv = findViewById(R.id.linearLayoutNot);
 
             switch (item.getItemId()) {
                 case R.id.navigation_filtre:
-                    a.setVisibility(View.VISIBLE);
-                    b.setVisibility(View.GONE);
-                    c.setVisibility(View.GONE);
+                    viewNavigatonFilters.setVisibility(View.VISIBLE);
+                    viewNavigationModif.setVisibility(View.GONE);
+                    viewNavigationAdv.setVisibility(View.GONE);
                     return true;
                 case R.id.navigation_modif:
-                    a.setVisibility(View.GONE);
-                    b.setVisibility(View.VISIBLE);
-                    c.setVisibility(View.GONE);
+                    viewNavigatonFilters.setVisibility(View.GONE);
+                    viewNavigationModif.setVisibility(View.VISIBLE);
+                    viewNavigationAdv.setVisibility(View.GONE);
                     return true;
                 case R.id.navigation_adv:
-                    a.setVisibility(View.GONE);
-                    b.setVisibility(View.GONE);
-                    c.setVisibility(View.VISIBLE);
+                    viewNavigatonFilters.setVisibility(View.GONE);
+                    viewNavigationModif.setVisibility(View.GONE);
+                    viewNavigationAdv.setVisibility(View.VISIBLE);
                     return true;
             }
             return false;
@@ -147,35 +140,32 @@ public class UploadedPictureEdit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uploaded_picture_edit);
 
-        verifyStoragePermissions2(UploadedPictureEdit.this);
+        verifyStoragePermissions(UploadedPictureEdit.this);
 
-        View a = findViewById(R.id.linearLayoutHome);
-        View b = findViewById(R.id.linearLayoutDash);
-        View c = findViewById(R.id.linearLayoutNot);
-        b.setVisibility(View.GONE);
-        c.setVisibility(View.GONE);
+        View viewNavigationModif = findViewById(R.id.linearLayoutDash);
+        View viewNavigationAdv = findViewById(R.id.linearLayoutNot);
+        viewNavigationModif.setVisibility(View.GONE);
+        viewNavigationAdv.setVisibility(View.GONE);
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
-        im = (ImageView) findViewById(R.id.imageView);
+        imageView = (ImageView) findViewById(R.id.imageView);
 
-        Bundle extras= getIntent().getExtras();
-        if(extras!=null)
-        {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
             path = (Uri) extras.get("imgurl");
-            im.setImageURI(path);
-            BitmapDrawable abmp = (BitmapDrawable) im.getDrawable();
+            imageView.setImageURI(path);
+            BitmapDrawable abmp = (BitmapDrawable) imageView.getDrawable();
             original = abmp.getBitmap();
         }
 
+        undoList.add(new Element(currentFilter, currentCrop, currentMirror, currentAngle,
+                currentContrastRedValue, currentContrastGreenValue, currentContrastBlueValue,
+                currentRgbRedValue, currentRgbGreenValue, currentRgbBlueValue, currentBrightness));
 
-
-        undoList.add(new Element(currentFilter,currentCrop,currentMirror,currentAngle,
-                                 currentContrastRedValue,currentContrastGreenValue,currentContrastBlueValue,
-                                 currentRgbRedValue,currentRgbGreenValue,currentRgbBlueValue,currentBrightness));
-
-        im.setOnLongClickListener(new View.OnLongClickListener() {
+        imageView.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
                 undoToOriginal();
                 return true;
@@ -185,7 +175,7 @@ public class UploadedPictureEdit extends AppCompatActivity {
 
 
     public void checkSteps() {
-        while(currentStep<maximumSteps){
+        while (currentStep < maximumSteps) {
             maximumSteps--;
             undoList.removeLast();
         }
@@ -194,26 +184,23 @@ public class UploadedPictureEdit extends AppCompatActivity {
     public void defaultCropButtonAction(View view) {
         String whichCrop = view.getTag().toString();
 
-        if(!undoList.get(currentStep).crop.toString().equals(whichCrop)) {
-            // Bitmap cropedBmp = applyDefaultCrop(whichCrop, original)
-            // im.setImageBitmap(applyFilter(currentFilter.toString(), cropedBmp));
-            im.setImageBitmap(applyBrightness(currentBrightness,
-                    applyContrast(currentContrastRedValue,currentContrastGreenValue,currentContrastBlueValue,
-                            applyRGB(currentRgbRedValue,currentRgbGreenValue,currentRgbBlueValue,
+        if (!undoList.get(currentStep).crop.toString().equals(whichCrop)) {
+            imageView.setImageBitmap(applyBrightness(currentBrightness,
+                    applyContrast(currentContrastRedValue, currentContrastGreenValue, currentContrastBlueValue,
+                            applyRGB(currentRgbRedValue, currentRgbGreenValue, currentRgbBlueValue,
                                     applyFilter(currentFilter.toString(),
-                                        applyDefaultCrop(whichCrop,
-                                             applyMirroring(currentMirror.toString(),
-                                                rotateImage(currentAngle, original))))))));
+                                            applyDefaultCrop(whichCrop,
+                                                    applyMirroring(currentMirror.toString(),
+                                                            rotateImage(currentAngle, original))))))));
 
             currentCrop.delete(0, currentCrop.length());
             currentCrop.append(whichCrop);
-            Element e = new Element(currentFilter, currentCrop,currentMirror,currentAngle,
-                    currentContrastRedValue,currentContrastGreenValue,currentContrastBlueValue,
-                    currentRgbRedValue,currentRgbGreenValue,currentRgbBlueValue,currentBrightness);
+            Element e = new Element(currentFilter, currentCrop, currentMirror, currentAngle,
+                    currentContrastRedValue, currentContrastGreenValue, currentContrastBlueValue,
+                    currentRgbRedValue, currentRgbGreenValue, currentRgbBlueValue, currentBrightness);
 
             checkSteps();
             undoList.addLast(e);
-
 
             currentStep++;
             maximumSteps++;
@@ -235,11 +222,11 @@ public class UploadedPictureEdit extends AppCompatActivity {
                 cropedBmp = defaultCrop34(bmp);
                 break;
             }
-            case "5:7":{
+            case "5:7": {
                 cropedBmp = defaultCrop57(bmp);
                 break;
             }
-            case "7:5":{
+            case "7:5": {
                 cropedBmp = defaultCrop75(bmp);
                 break;
             }
@@ -249,181 +236,162 @@ public class UploadedPictureEdit extends AppCompatActivity {
         }
         return cropedBmp;
     }
-    public Bitmap defaultCrop57(Bitmap bmp){
-        int dif;
-        int[] pixels=new int[1920000];
 
-        if(bmp.getWidth()<bmp.getHeight()){
-            int width=bmp.getWidth();
-            int height=7*width/5;
-            dif=Math.abs(bmp.getHeight()-height);
-            Log.d("dif", String.valueOf(dif));
-            operation = Bitmap.createBitmap(bmp.getWidth(),bmp.getHeight()-dif+1, bmp.getConfig());
-
-
-            for (int i = dif/2; i < bmp.getHeight()-dif/2; i++) {
-                bmp.getPixels(pixels, 0, bmp.getWidth(), 0, i, bmp.getWidth(), 1);
-                operation.setPixels(pixels, 0, bmp.getWidth(), 0, i-dif/2, bmp.getWidth(), 1);
-            }
-        }
-        else{
-            int height=bmp.getHeight();
-            int width=5*height/7;
-            dif=Math.abs(bmp.getWidth()-width);
-            Log.d("dif", String.valueOf(dif));
-            operation = Bitmap.createBitmap(bmp.getWidth()-dif,bmp.getHeight(), bmp.getConfig());
-
-
-            for (int i = 0; i < bmp.getHeight(); i++) {
-                bmp.getPixels(pixels, 0, bmp.getWidth()-dif, dif/2, i, bmp.getWidth()-dif, 1);
-                operation.setPixels(pixels, 0, bmp.getWidth()-dif, 0, i, bmp.getWidth()-dif, 1);
-            }
-        }
-        return operation;
-
-    }
-
-    public Bitmap defaultCrop75(Bitmap bmp){
-        int dif;
-        int[] pixels=new int[1920000];
-
-        if(bmp.getWidth()<bmp.getHeight()){
-            int width=bmp.getWidth();
-            int height=5*width/7;
-            dif=Math.abs(bmp.getHeight()-height);
-            Log.d("dif", String.valueOf(dif));
-            operation = Bitmap.createBitmap(bmp.getWidth(),bmp.getHeight()-dif+1, bmp.getConfig());
-
-
-            for (int i = dif/2; i < bmp.getHeight()-dif/2; i++) {
-                bmp.getPixels(pixels, 0, bmp.getWidth(), 0, i, bmp.getWidth(), 1);
-                operation.setPixels(pixels, 0, bmp.getWidth(), 0, i-dif/2, bmp.getWidth(), 1);
-            }
-        }
-        else{
-            int height=bmp.getHeight();
-            int width=7*height/5;
-            dif=Math.abs(bmp.getWidth()-width);
-            Log.d("dif", String.valueOf(dif));
-            operation = Bitmap.createBitmap(bmp.getWidth()-dif,bmp.getHeight(), bmp.getConfig());
-
-
-            for (int i = 0; i < bmp.getHeight(); i++) {
-                bmp.getPixels(pixels, 0, bmp.getWidth()-dif, dif/2, i, bmp.getWidth()-dif, 1);
-                operation.setPixels(pixels, 0, bmp.getWidth()-dif, 0, i, bmp.getWidth()-dif, 1);
-            }
-        }
-        return operation;
-
-    }
     public Bitmap defaultCrop11(Bitmap bmp) {
-        int dif;
+        int differenceInSides;
         int[] pixels = new int[1920000];
 
         if (bmp.getWidth() < bmp.getHeight()) {
-            dif = bmp.getHeight() - bmp.getWidth();
-            operation = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight() - dif + 1, bmp.getConfig());
+            differenceInSides = bmp.getHeight() - bmp.getWidth();
+            operation = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight() - differenceInSides + 1, bmp.getConfig());
 
-            Log.d("dif", String.valueOf(dif));
-            for (int i = dif / 2; i < bmp.getHeight() - dif / 2; i++) {
+            for (int i = differenceInSides / 2; i < bmp.getHeight() - differenceInSides / 2; i++) {
                 bmp.getPixels(pixels, 0, bmp.getWidth(), 0, i, bmp.getWidth(), 1);
-                operation.setPixels(pixels, 0, bmp.getWidth(), 0, i - dif / 2, bmp.getWidth(), 1);
+                operation.setPixels(pixels, 0, bmp.getWidth(), 0, i - differenceInSides / 2, bmp.getWidth(), 1);
             }
         } else {
-            dif = bmp.getWidth() - bmp.getHeight();
-            operation = Bitmap.createBitmap(bmp.getWidth() - dif, bmp.getHeight(), bmp.getConfig());
+            differenceInSides = bmp.getWidth() - bmp.getHeight();
+            operation = Bitmap.createBitmap(bmp.getWidth() - differenceInSides, bmp.getHeight(), bmp.getConfig());
 
-            Log.d("dif", String.valueOf(dif));
+            Log.d("dif", String.valueOf(differenceInSides));
             for (int i = 0; i < bmp.getHeight(); i++) {
-                bmp.getPixels(pixels, 0, bmp.getWidth() - dif, dif / 2, i, bmp.getWidth() - dif, 1);
-                operation.setPixels(pixels, 0, bmp.getWidth() - dif, 0, i, bmp.getWidth() - dif, 1);
+                bmp.getPixels(pixels, 0, bmp.getWidth() - differenceInSides, differenceInSides / 2, i, bmp.getWidth() - differenceInSides, 1);
+                operation.setPixels(pixels, 0, bmp.getWidth() - differenceInSides, 0, i, bmp.getWidth() - differenceInSides, 1);
             }
         }
 
         return operation;
-        //im.setImageBitmap(operation);
     }
 
     public Bitmap defaultCrop43(Bitmap bmp) {
-        int dif;
+        int differenceInSides;
         int[] pixels = new int[1920000];
 
         if (bmp.getWidth() < bmp.getHeight()) {
             int width = bmp.getWidth();
             int height = 3 * width / 4;
-            dif = Math.abs(bmp.getHeight() - height);
-            Log.d("dif", String.valueOf(dif));
-            operation = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight() - dif + 1, bmp.getConfig());
+            differenceInSides = Math.abs(bmp.getHeight() - height);
+            Log.d("dif", String.valueOf(differenceInSides));
+            operation = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight() - differenceInSides + 1, bmp.getConfig());
 
-
-            for (int i = dif / 2; i < bmp.getHeight() - dif / 2; i++) {
+            for (int i = differenceInSides / 2; i < bmp.getHeight() - differenceInSides / 2; i++) {
                 bmp.getPixels(pixels, 0, bmp.getWidth(), 0, i, bmp.getWidth(), 1);
-                operation.setPixels(pixels, 0, bmp.getWidth(), 0, i - dif / 2, bmp.getWidth(), 1);
+                operation.setPixels(pixels, 0, bmp.getWidth(), 0, i - differenceInSides / 2, bmp.getWidth(), 1);
             }
         } else {
             int height = bmp.getHeight();
             int width = 4 * height / 3;
-            dif = Math.abs(bmp.getWidth() - width);
-            Log.d("dif", String.valueOf(dif));
-            operation = Bitmap.createBitmap(bmp.getWidth() - dif, bmp.getHeight(), bmp.getConfig());
-
+            differenceInSides = Math.abs(bmp.getWidth() - width);
+            Log.d("dif", String.valueOf(differenceInSides));
+            operation = Bitmap.createBitmap(bmp.getWidth() - differenceInSides, bmp.getHeight(), bmp.getConfig());
 
             for (int i = 0; i < bmp.getHeight(); i++) {
-                bmp.getPixels(pixels, 0, bmp.getWidth() - dif, dif / 2, i, bmp.getWidth() - dif, 1);
-                operation.setPixels(pixels, 0, bmp.getWidth() - dif, 0, i, bmp.getWidth() - dif, 1);
+                bmp.getPixels(pixels, 0, bmp.getWidth() - differenceInSides, differenceInSides / 2, i, bmp.getWidth() - differenceInSides, 1);
+                operation.setPixels(pixels, 0, bmp.getWidth() - differenceInSides, 0, i, bmp.getWidth() - differenceInSides, 1);
             }
         }
 
         return operation;
-        //im.setImageBitmap(operation);
-
     }
 
     public Bitmap defaultCrop34(Bitmap bmp) {
-        int dif;
+        int differenceInSides;
         int[] pixels = new int[1920000];
 
         if (bmp.getWidth() < bmp.getHeight()) {
             int width = bmp.getWidth();
             int height = 4 * width / 3;
-            dif = Math.abs(bmp.getHeight() - height);
-            Log.d("dif", String.valueOf(dif));
-            operation = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight() - dif + 1, bmp.getConfig());
+            differenceInSides = Math.abs(bmp.getHeight() - height);
+            Log.d("dif", String.valueOf(differenceInSides));
+            operation = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight() - differenceInSides + 1, bmp.getConfig());
 
-
-            for (int i = dif / 2; i < bmp.getHeight() - dif / 2; i++) {
+            for (int i = differenceInSides / 2; i < bmp.getHeight() - differenceInSides / 2; i++) {
                 bmp.getPixels(pixels, 0, bmp.getWidth(), 0, i, bmp.getWidth(), 1);
-                operation.setPixels(pixels, 0, bmp.getWidth(), 0, i - dif / 2, bmp.getWidth(), 1);
+                operation.setPixels(pixels, 0, bmp.getWidth(), 0, i - differenceInSides / 2, bmp.getWidth(), 1);
             }
         } else {
             int height = bmp.getHeight();
             int width = 3 * height / 4;
-            dif = Math.abs(bmp.getWidth() - width);
-            Log.d("dif", String.valueOf(dif));
-            operation = Bitmap.createBitmap(bmp.getWidth() - dif, bmp.getHeight(), bmp.getConfig());
-
+            differenceInSides = Math.abs(bmp.getWidth() - width);
+            Log.d("dif", String.valueOf(differenceInSides));
+            operation = Bitmap.createBitmap(bmp.getWidth() - differenceInSides, bmp.getHeight(), bmp.getConfig());
 
             for (int i = 0; i < bmp.getHeight(); i++) {
-                bmp.getPixels(pixels, 0, bmp.getWidth() - dif, dif / 2, i, bmp.getWidth() - dif, 1);
-                operation.setPixels(pixels, 0, bmp.getWidth() - dif, 0, i, bmp.getWidth() - dif, 1);
+                bmp.getPixels(pixels, 0, bmp.getWidth() - differenceInSides, differenceInSides / 2, i, bmp.getWidth() - differenceInSides, 1);
+                operation.setPixels(pixels, 0, bmp.getWidth() - differenceInSides, 0, i, bmp.getWidth() - differenceInSides, 1);
             }
         }
 
         return operation;
-        //im.setImageBitmap(operation);
+    }
 
+    public Bitmap defaultCrop57(Bitmap bmp) {
+        int differenceInSides;
+        int[] pixels = new int[1920000];
+
+        if (bmp.getWidth() < bmp.getHeight()) {
+            int width = bmp.getWidth();
+            int height = 7 * width / 5;
+            differenceInSides = Math.abs(bmp.getHeight() - height);
+            Log.d("dif", String.valueOf(differenceInSides));
+            operation = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight() - differenceInSides + 1, bmp.getConfig());
+
+            for (int i = differenceInSides / 2; i < bmp.getHeight() - differenceInSides / 2; i++) {
+                bmp.getPixels(pixels, 0, bmp.getWidth(), 0, i, bmp.getWidth(), 1);
+                operation.setPixels(pixels, 0, bmp.getWidth(), 0, i - differenceInSides / 2, bmp.getWidth(), 1);
+            }
+        } else {
+            int height = bmp.getHeight();
+            int width = 5 * height / 7;
+            differenceInSides = Math.abs(bmp.getWidth() - width);
+            Log.d("dif", String.valueOf(differenceInSides));
+            operation = Bitmap.createBitmap(bmp.getWidth() - differenceInSides, bmp.getHeight(), bmp.getConfig());
+
+            for (int i = 0; i < bmp.getHeight(); i++) {
+                bmp.getPixels(pixels, 0, bmp.getWidth() - differenceInSides, differenceInSides / 2, i, bmp.getWidth() - differenceInSides, 1);
+                operation.setPixels(pixels, 0, bmp.getWidth() - differenceInSides, 0, i, bmp.getWidth() - differenceInSides, 1);
+            }
+        }
+        return operation;
+    }
+
+    public Bitmap defaultCrop75(Bitmap bmp) {
+        int differenceInSides;
+        int[] pixels = new int[1920000];
+
+        if (bmp.getWidth() < bmp.getHeight()) {
+            int width = bmp.getWidth();
+            int height = 5 * width / 7;
+            differenceInSides = Math.abs(bmp.getHeight() - height);
+            Log.d("dif", String.valueOf(differenceInSides));
+            operation = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight() - differenceInSides + 1, bmp.getConfig());
+
+            for (int i = differenceInSides / 2; i < bmp.getHeight() - differenceInSides / 2; i++) {
+                bmp.getPixels(pixels, 0, bmp.getWidth(), 0, i, bmp.getWidth(), 1);
+                operation.setPixels(pixels, 0, bmp.getWidth(), 0, i - differenceInSides / 2, bmp.getWidth(), 1);
+            }
+        } else {
+            int height = bmp.getHeight();
+            int width = 7 * height / 5;
+            differenceInSides = Math.abs(bmp.getWidth() - width);
+            Log.d("dif", String.valueOf(differenceInSides));
+            operation = Bitmap.createBitmap(bmp.getWidth() - differenceInSides, bmp.getHeight(), bmp.getConfig());
+
+            for (int i = 0; i < bmp.getHeight(); i++) {
+                bmp.getPixels(pixels, 0, bmp.getWidth() - differenceInSides, differenceInSides / 2, i, bmp.getWidth() - differenceInSides, 1);
+                operation.setPixels(pixels, 0, bmp.getWidth() - differenceInSides, 0, i, bmp.getWidth() - differenceInSides, 1);
+            }
+        }
+        return operation;
     }
 
     public void filterButtonAction(View view) {
         String whichFilter = view.getTag().toString();
 
-        if(!undoList.get(currentStep).filter.toString().equals(whichFilter)) {
-            //Bitmap filteredBmp = applyFilter(whichFilter, original);
-            //im.setImageBitmap(applyDefaultCrop(currentCrop.toString(), filteredBmp));
-
-            im.setImageBitmap(applyBrightness(currentBrightness,
-                    applyContrast(currentContrastRedValue,currentContrastGreenValue,currentContrastBlueValue,
-                            applyRGB(currentRgbRedValue,currentRgbGreenValue,currentRgbBlueValue,
+        if (!undoList.get(currentStep).filter.toString().equals(whichFilter)) {
+            imageView.setImageBitmap(applyBrightness(currentBrightness,
+                    applyContrast(currentContrastRedValue, currentContrastGreenValue, currentContrastBlueValue,
+                            applyRGB(currentRgbRedValue, currentRgbGreenValue, currentRgbBlueValue,
                                     applyFilter(whichFilter,
                                             applyDefaultCrop(currentCrop.toString(),
                                                     applyMirroring(currentMirror.toString(),
@@ -431,20 +399,19 @@ public class UploadedPictureEdit extends AppCompatActivity {
 
             currentFilter.delete(0, currentFilter.length());
             currentFilter.append(whichFilter);
-            Element e = new Element(currentFilter, currentCrop,currentMirror,currentAngle,
-                    currentContrastRedValue,currentContrastGreenValue,currentContrastBlueValue,
-                    currentRgbRedValue,currentRgbGreenValue,currentRgbBlueValue,currentBrightness);
+            Element e = new Element(currentFilter, currentCrop, currentMirror, currentAngle,
+                    currentContrastRedValue, currentContrastGreenValue, currentContrastBlueValue,
+                    currentRgbRedValue, currentRgbGreenValue, currentRgbBlueValue, currentBrightness);
 
             checkSteps();
             undoList.add(e);
-
 
             currentStep++;
             maximumSteps++;
         }
     }
 
-    public Bitmap applyFilter(String whichFilter,Bitmap bmp) {
+    public Bitmap applyFilter(String whichFilter, Bitmap bmp) {
         Bitmap filteredBmp;
         switch (whichFilter) {
             case "GreyScale": {
@@ -455,32 +422,32 @@ public class UploadedPictureEdit extends AppCompatActivity {
                 filteredBmp = filterSepia(bmp);
                 break;
             }
-            case "Warmer":{
+            case "Warmer": {
                 filteredBmp = filterWarmer(bmp);
                 break;
             }
-            case "Cold":{
+            case "Cold": {
                 filteredBmp = filterCold(bmp);
                 break;
             }
-            case "AccentColor":{
+            case "AccentColor": {
                 filteredBmp = filterAccentColor(bmp);
                 break;
             }
 
-            case "White":{
+            case "White": {
                 filteredBmp = filterWhite(bmp);
                 break;
             }
-            case "Ghost":{
+            case "Ghost": {
                 filteredBmp = filterGhost(bmp);
                 break;
             }
-            case "Ice":{
+            case "Ice": {
                 filteredBmp = filterIce(bmp);
                 break;
             }
-            case "TvShow":{
+            case "TvShow": {
                 filteredBmp = filterTvShow(bmp);
                 break;
             }
@@ -492,47 +459,23 @@ public class UploadedPictureEdit extends AppCompatActivity {
     }
 
     public Bitmap filterTvShow(Bitmap bmp) {
-        int[] pixels=new int[999999];
-        operation = Bitmap.createBitmap(bmp.getWidth(),bmp.getHeight(), bmp.getConfig());
-        for (int i = 1; i < bmp.getHeight()/10-1; i++) {
-            for(int j=1;j<bmp.getWidth()/10-1;j++) {
-                int avg=0;
-                bmp.getPixels(pixels, 0, bmp.getWidth(), j*10, i*10, 10, 10);
-                for(int q=0;q<10;q++) {
+        int[] pixels = new int[999999];
+        operation = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), bmp.getConfig());
+        for (int i = 1; i < bmp.getHeight() / 10 - 1; i++) {
+            for (int j = 1; j < bmp.getWidth() / 10 - 1; j++) {
+                int avg = 0;
+                bmp.getPixels(pixels, 0, bmp.getWidth(), j * 10, i * 10, 10, 10);
+                for (int q = 0; q < 10; q++) {
                     avg += pixels[q];
                 }
-                avg/=100;
-                for(int q=0;q<10;q++) {
-                    pixels[q]=avg;
+                avg /= 100;
+                for (int q = 0; q < 10; q++) {
+                    pixels[q] = avg;
                 }
-                operation.setPixels(pixels, 0, bmp.getWidth(), j*10, i*10, 10, 10);
+                operation.setPixels(pixels, 0, bmp.getWidth(), j * 10, i * 10, 10, 10);
             }
         }
         return operation;
-    }
-
-
-    public Bitmap applyRGB(float redValue, float greenValue, float blueValue,Bitmap bmp) {
-
-        return createFilteredBitmap(bmp, redValue, 0, 0, 0, 0,
-                0, greenValue, 0, 0, 0,
-                0, 0, blueValue, 0, 0,
-                0, 0, 0, 1, 0);
-    }
-
-    public Bitmap applyContrast(float redValue, float greenValue, float blueValue,Bitmap bmp) {
-
-        return createFilteredBitmap(bmp, redValue, 0, 0, 0, 0,
-                0, greenValue, 0, 0, 0,
-                0, 0, blueValue, 0, 0,
-                0, 0, 0, 1, 0);
-    }
-
-    public Bitmap applyBrightness(int brightness,Bitmap bmp) {
-        return createFilteredBitmap(bmp, 1, 0, 0, 0, brightness,
-                0, 1, 0, 0, brightness,
-                0, 0, 1, 0, brightness,
-                0, 0, 0, 1, 0);
     }
 
     public Bitmap filterIce(Bitmap bmp) {
@@ -555,6 +498,7 @@ public class UploadedPictureEdit extends AppCompatActivity {
                 0.43f, 0, 0.903f, 0.12f, 0,
                 0, 0, 0, 1, 0);
     }
+
     public Bitmap filterAccentColor(Bitmap bmp) {
         return createFilteredBitmap(bmp, 1.3f, 0, 0, 0, 0,
                 0, 1.3f, 0, 0, 0,
@@ -575,6 +519,7 @@ public class UploadedPictureEdit extends AppCompatActivity {
                 0.3f, 0.59f, 0.11f, 0, 0,
                 0, 0, 0, 1, 0);
     }
+
     public Bitmap filterWarmer(Bitmap bmp) {
         return createFilteredBitmap(bmp, 0.843f, 0, 0, 0, 0,
                 0, 0.708f, 0, 0, 0,
@@ -583,10 +528,8 @@ public class UploadedPictureEdit extends AppCompatActivity {
     }
 
 
-
     public Bitmap filterSepia(Bitmap bmp) {
         final ColorMatrix matrixA = new ColorMatrix();
-        // making image B&W
         matrixA.setSaturation(.9f);
 
         final ColorMatrix matrixB = new ColorMatrix(new float[]{
@@ -594,8 +537,6 @@ public class UploadedPictureEdit extends AppCompatActivity {
                 0, 1.30f, 1, 0, 0,
                 1, 0, 1.37f, 0, 0,
                 0, 0, 0, 1, 0});
-        // applying scales for RGB color values
-        //matrixB.setScale(1f, .95f, .82f, 1.0f);
         matrixA.setConcat(matrixB, matrixA);
 
         final ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(matrixA);
@@ -610,7 +551,6 @@ public class UploadedPictureEdit extends AppCompatActivity {
         canvas.drawBitmap(bmp, 0, 0, paint);
 
         return bitmap;
-        //im.setImageBitmap(bitmap);
     }
 
 
@@ -639,34 +579,47 @@ public class UploadedPictureEdit extends AppCompatActivity {
         return bitmap;
     }
 
-    /*public void rotate(View view) {
-        angle += 90;
+    public Bitmap applyRGB(float redValue, float greenValue, float blueValue, Bitmap bmp) {
 
-        Bitmap rotatedImage = rotateImage(original, angle);
-        im.setImageBitmap(rotatedImage);
+        return createFilteredBitmap(bmp, redValue, 0, 0, 0, 0,
+                0, greenValue, 0, 0, 0,
+                0, 0, blueValue, 0, 0,
+                0, 0, 0, 1, 0);
+    }
 
-    }*/
+    public Bitmap applyContrast(float redValue, float greenValue, float blueValue, Bitmap bmp) {
+
+        return createFilteredBitmap(bmp, redValue, 0, 0, 0, 0,
+                0, greenValue, 0, 0, 0,
+                0, 0, blueValue, 0, 0,
+                0, 0, 0, 1, 0);
+    }
+
+    public Bitmap applyBrightness(int brightness, Bitmap bmp) {
+        return createFilteredBitmap(bmp, 1, 0, 0, 0, brightness,
+                0, 1, 0, 0, brightness,
+                0, 0, 1, 0, brightness,
+                0, 0, 0, 1, 0);
+    }
 
     public void rotateButtonActin(View view) {
         currentAngle = currentAngle + 90;
-        if(currentAngle >= 360) currentAngle=0;
+        if (currentAngle >= 360) currentAngle = 0;
 
-        im.setImageBitmap(applyBrightness(currentBrightness,
-                applyContrast(currentContrastRedValue,currentContrastGreenValue,currentContrastBlueValue,
-                        applyRGB(currentRgbRedValue,currentRgbGreenValue,currentRgbBlueValue,
+        imageView.setImageBitmap(applyBrightness(currentBrightness,
+                applyContrast(currentContrastRedValue, currentContrastGreenValue, currentContrastBlueValue,
+                        applyRGB(currentRgbRedValue, currentRgbGreenValue, currentRgbBlueValue,
                                 applyFilter(currentFilter.toString(),
                                         applyDefaultCrop(currentCrop.toString(),
                                                 applyMirroring(currentMirror.toString(),
                                                         rotateImage(currentAngle, original))))))));
 
-        Element e = new Element(currentFilter,currentCrop,currentMirror, currentAngle,
-                currentContrastRedValue,currentContrastGreenValue,currentContrastBlueValue,
-                currentRgbRedValue,currentRgbGreenValue,currentRgbBlueValue,currentBrightness);
+        Element e = new Element(currentFilter, currentCrop, currentMirror, currentAngle,
+                currentContrastRedValue, currentContrastGreenValue, currentContrastBlueValue,
+                currentRgbRedValue, currentRgbGreenValue, currentRgbBlueValue, currentBrightness);
 
         checkSteps();
         undoList.addLast(e);
-
-
 
         currentStep++;
         maximumSteps++;
@@ -681,9 +634,9 @@ public class UploadedPictureEdit extends AppCompatActivity {
     public void mirrorButtonAction(View view) {
         String whichMirror = view.getTag().toString();
 
-        im.setImageBitmap(applyBrightness(currentBrightness,
-                applyContrast(currentContrastRedValue,currentContrastGreenValue,currentContrastBlueValue,
-                        applyRGB(currentRgbRedValue,currentRgbGreenValue,currentRgbBlueValue,
+        imageView.setImageBitmap(applyBrightness(currentBrightness,
+                applyContrast(currentContrastRedValue, currentContrastGreenValue, currentContrastBlueValue,
+                        applyRGB(currentRgbRedValue, currentRgbGreenValue, currentRgbBlueValue,
                                 applyFilter(currentFilter.toString(),
                                         applyDefaultCrop(currentCrop.toString(),
                                                 applyMirroring(whichMirror,
@@ -691,9 +644,9 @@ public class UploadedPictureEdit extends AppCompatActivity {
 
         currentMirror.delete(0, currentMirror.length());
         currentMirror.append(whichMirror);
-        Element e = new Element(currentFilter, currentCrop,currentMirror,currentAngle,
-                currentContrastRedValue,currentContrastGreenValue,currentContrastBlueValue,
-                currentRgbRedValue,currentRgbGreenValue,currentRgbBlueValue,currentBrightness);
+        Element e = new Element(currentFilter, currentCrop, currentMirror, currentAngle,
+                currentContrastRedValue, currentContrastGreenValue, currentContrastBlueValue,
+                currentRgbRedValue, currentRgbGreenValue, currentRgbBlueValue, currentBrightness);
 
         checkSteps();
         undoList.addLast(e);
@@ -721,164 +674,149 @@ public class UploadedPictureEdit extends AppCompatActivity {
         return mirroredBmp;
     }
 
-    public Bitmap mirrorOrizontal(Bitmap bmp){
-
-        int[] pixels=new int[bmp.getWidth()];
-        operation = Bitmap.createBitmap(bmp.getWidth(),bmp.getHeight(), bmp.getConfig());
+    public Bitmap mirrorOrizontal(Bitmap bmp) {
+        int[] pixels = new int[bmp.getWidth()];
+        operation = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), bmp.getConfig());
         for (int i = 0; i < bmp.getHeight(); i++) {
             bmp.getPixels(pixels, 0, bmp.getWidth(), 0, bmp.getHeight() - i - 1, bmp.getWidth(), 1);
             operation.setPixels(pixels, 0, bmp.getWidth(), 0, i, bmp.getWidth(), 1);
         }
         return operation;
-        //im.setImageBitmap(operation);
     }
 
-    public Bitmap mirrorVertical(Bitmap bmp){
-        int[] pixels=new int[bmp.getHeight()];
-        operation = Bitmap.createBitmap(bmp.getWidth(),bmp.getHeight(), bmp.getConfig());
+    public Bitmap mirrorVertical(Bitmap bmp) {
+        int[] pixels = new int[bmp.getHeight()];
+        operation = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), bmp.getConfig());
         for (int i = 0; i < bmp.getWidth(); i++) {
             bmp.getPixels(pixels, 0, 1, i, 0, 1, bmp.getHeight());
             operation.setPixels(pixels, 0, 1, bmp.getWidth() - i - 1, 0, 1, bmp.getHeight());
         }
         return operation;
-        //im.setImageBitmap(operation);
     }
-
 
 
     public void undoChange(View view) {
         ListIterator<Element> undoListIterator = undoList.listIterator(0);
-        /*while(undoListIterator.hasNext()) {
-            Element e=undoListIterator.next();
-            Log.d("SOMETHING", e.crop.toString() + " " + e.filter.toString());
-        }*/
 
-        for(int i=1;i<currentStep;i++) {
+        for (int i = 1; i < currentStep; i++) {
             undoListIterator.next();
         }
-        Element e=undoListIterator.next();
-        //Log.d("SOMETHING", e.crop.toString() + " " + e.filter.toString());
+        Element e = undoListIterator.next();
 
-        // Bitmap cropedBmp = applyDefaultCrop(e.crop.toString(),original);
-        //im.setImageBitmap(applyFilter(e.filter.toString(),cropedBmp));
-
-        im.setImageBitmap(applyBrightness(e.brightness,
-                applyContrast(e.contrastRedValue,e.contrastGreenValue,e.contrastBlueValue,
-                        applyRGB(e.rgbRedValue,e.rgbGreenValue,e.rgbBlueValue,
+        imageView.setImageBitmap(applyBrightness(e.brightness,
+                applyContrast(e.contrastRedValue, e.contrastGreenValue, e.contrastBlueValue,
+                        applyRGB(e.rgbRedValue, e.rgbGreenValue, e.rgbBlueValue,
                                 applyFilter(e.filter.toString(),
-                                    applyDefaultCrop(e.crop.toString(),
-                                        applyMirroring(e.mirror.toString(),
-                                            rotateImage(e.angle, original))))))));
+                                        applyDefaultCrop(e.crop.toString(),
+                                                applyMirroring(e.mirror.toString(),
+                                                        rotateImage(e.angle, original))))))));
 
-        currentCrop.delete(0,currentCrop.length());
+        currentCrop.delete(0, currentCrop.length());
         currentCrop.append(e.crop.toString());
 
-        currentFilter.delete(0,currentFilter.length());
+        currentFilter.delete(0, currentFilter.length());
         currentFilter.append(e.filter.toString());
 
-        currentMirror.delete(0,currentMirror.length());
+        currentMirror.delete(0, currentMirror.length());
         currentMirror.append(e.mirror.toString());
 
         currentAngle = e.angle;
 
-        currentContrastRedValue=e.contrastRedValue;
-        currentContrastGreenValue=e.contrastGreenValue;
-        currentContrastBlueValue=e.contrastBlueValue;
+        currentContrastRedValue = e.contrastRedValue;
+        currentContrastGreenValue = e.contrastGreenValue;
+        currentContrastBlueValue = e.contrastBlueValue;
 
-        currentRgbRedValue=e.rgbRedValue;
-        currentRgbGreenValue=e.rgbGreenValue;
-        currentRgbBlueValue=e.rgbBlueValue;
+        currentRgbRedValue = e.rgbRedValue;
+        currentRgbGreenValue = e.rgbGreenValue;
+        currentRgbBlueValue = e.rgbBlueValue;
 
-        currentBrightness=e.brightness;
+        currentBrightness = e.brightness;
 
-        if(currentStep>0) currentStep--;
-
-
-        Log.d("Curent modifications: ", e.filter.toString() + " " + e.crop.toString() + " " + e.mirror.toString() + " " + e.angle + " " + e.rgbRedValue
-                + " " + e.rgbGreenValue + " " + e.rgbBlueValue + " " + e.contrastRedValue + " " + e.contrastGreenValue + " " + e.contrastBlueValue + " " + e.brightness);
+        if (currentStep > 0) currentStep--;
     }
 
     public void redoChange(View view) {
         ListIterator<Element> undoListIterator = undoList.listIterator(0);
 
-        if(currentStep<maximumSteps) {
+        if (currentStep < maximumSteps) {
             currentStep++;
 
-            for(int i=1;i<=currentStep;i++) {
+            for (int i = 1; i <= currentStep; i++) {
                 undoListIterator.next();
             }
-            Element e=undoListIterator.next();
+            Element e = undoListIterator.next();
 
-            //Bitmap cropedBmp = applyDefaultCrop(e.crop.toString(),original);
-            //im.setImageBitmap(applyFilter(e.filter.toString(),cropedBmp));
-
-            im.setImageBitmap(applyBrightness(e.brightness,
-                    applyContrast(e.contrastRedValue,e.contrastGreenValue,e.contrastBlueValue,
-                            applyRGB(e.rgbRedValue,e.rgbGreenValue,e.rgbBlueValue,
+            imageView.setImageBitmap(applyBrightness(e.brightness,
+                    applyContrast(e.contrastRedValue, e.contrastGreenValue, e.contrastBlueValue,
+                            applyRGB(e.rgbRedValue, e.rgbGreenValue, e.rgbBlueValue,
                                     applyFilter(e.filter.toString(),
                                             applyDefaultCrop(e.crop.toString(),
                                                     applyMirroring(e.mirror.toString(),
                                                             rotateImage(e.angle, original))))))));
 
-            currentCrop.delete(0,currentCrop.length());
+            currentCrop.delete(0, currentCrop.length());
             currentCrop.append(e.crop.toString());
 
-            currentFilter.delete(0,currentFilter.length());
+            currentFilter.delete(0, currentFilter.length());
             currentFilter.append(e.filter.toString());
 
             currentAngle = e.angle;
 
-            currentContrastRedValue=e.contrastRedValue;
-            currentContrastGreenValue=e.contrastGreenValue;
-            currentContrastBlueValue=e.contrastBlueValue;
+            currentContrastRedValue = e.contrastRedValue;
+            currentContrastGreenValue = e.contrastGreenValue;
+            currentContrastBlueValue = e.contrastBlueValue;
 
-            currentRgbRedValue=e.rgbRedValue;
-            currentRgbGreenValue=e.rgbGreenValue;
-            currentRgbBlueValue=e.rgbBlueValue;
+            currentRgbRedValue = e.rgbRedValue;
+            currentRgbGreenValue = e.rgbGreenValue;
+            currentRgbBlueValue = e.rgbBlueValue;
 
-            currentBrightness=e.brightness;
-
-            Log.d("Curent modifications: ", e.filter.toString() + " " + e.crop.toString() + " " + e.mirror.toString() + " " + e.angle + " " + e.rgbRedValue
-                    + " " + e.rgbGreenValue + " " + e.rgbBlueValue + " " + e.contrastRedValue + " " + e.contrastGreenValue + " " + e.contrastBlueValue + " " + e.brightness);
+            currentBrightness = e.brightness;
         }
     }
 
     public void undoToOriginal() {
-        currentCrop.delete(0,currentCrop.length());
+        currentCrop.delete(0, currentCrop.length());
         currentCrop.append("none");
 
-        currentFilter.delete(0,currentFilter.length());
+        currentFilter.delete(0, currentFilter.length());
         currentFilter.append("none");
 
-        currentMirror.delete(0,currentMirror.length());
+        currentMirror.delete(0, currentMirror.length());
         currentMirror.append("none");
 
         currentAngle = 0;
 
-        currentContrastRedValue=1;
-        currentContrastGreenValue=1;
-        currentContrastBlueValue=1;
+        currentContrastRedValue = 1;
+        currentContrastGreenValue = 1;
+        currentContrastBlueValue = 1;
 
-        currentRgbRedValue=1;
-        currentRgbGreenValue=1;
-        currentRgbBlueValue=1;
+        currentRgbRedValue = 1;
+        currentRgbGreenValue = 1;
+        currentRgbBlueValue = 1;
 
-        currentBrightness=0;
+        currentBrightness = 0;
 
-        undoList.addLast(new Element(currentFilter,currentCrop,currentMirror,currentAngle,
-                currentContrastRedValue,currentContrastGreenValue,currentContrastBlueValue,
-                currentRgbRedValue,currentRgbGreenValue,currentRgbBlueValue,currentBrightness));
+        undoList.addLast(new Element(currentFilter, currentCrop, currentMirror, currentAngle,
+                currentContrastRedValue, currentContrastGreenValue, currentContrastBlueValue,
+                currentRgbRedValue, currentRgbGreenValue, currentRgbBlueValue, currentBrightness));
 
         checkSteps();
 
         currentStep++;
         maximumSteps++;
 
-        im.setImageBitmap(original);
+        imageView.setImageBitmap(original);
     }
-    public void  saveButtonAction(View v){
+
+    public void saveButtonAction(View v) {
         Toast.makeText(this, "Saved", Toast.LENGTH_LONG).show();
+
         verifyStoragePermissions(UploadedPictureEdit.this);
+
+        ImageView im = (ImageView) findViewById(R.id.imageView);
+        BitmapDrawable abmp = (BitmapDrawable) im.getDrawable();
+        Bitmap bm = abmp.getBitmap();
+        saveBitmap(bm);
     }
 
     public void verifyStoragePermissions(Activity activity) {
@@ -891,31 +829,12 @@ public class UploadedPictureEdit extends AppCompatActivity {
                     activity,
                     PERMISSIONS_STORAGE,
                     REQUEST_EXTERNAL_STORAGE
-            );}
-
-        ImageView im = (ImageView) findViewById(R.id.imageView);
-        BitmapDrawable abmp = (BitmapDrawable) im.getDrawable();
-        Bitmap bm = abmp.getBitmap();
-        saveBitmap(bm);
-        Log.d("asda","asf");
-    }
-
-    public void verifyStoragePermissions2(Activity activity) {
-        // Check if we have write permission
-        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    activity,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
-            );}
+            );
+        }
     }
 
 
     private void saveBitmap(Bitmap bm) {
-
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root + "/NVImage");
         myDir.mkdirs();
@@ -924,7 +843,6 @@ public class UploadedPictureEdit extends AppCompatActivity {
         n = generator.nextInt(n);
         String fname = "Image-" + n + ".jpg";
         File file = new File(myDir, fname);
-        //Log.i(TAG, "" + file);
         if (file.exists())
             file.delete();
         try {
@@ -935,10 +853,9 @@ public class UploadedPictureEdit extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
-    public void saveTempFile(Bitmap bm){
+
+    public void saveTempFile(Bitmap bm) {
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root + "/NVImage");
         myDir.mkdirs();
@@ -956,12 +873,9 @@ public class UploadedPictureEdit extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    public void cropButtonAction(View v){
 
-        verifyStoragePermissions2(UploadedPictureEdit.this);
-
-        ImageView im = (ImageView) findViewById(R.id.imageView);
-        BitmapDrawable abmp = (BitmapDrawable) im.getDrawable();
+    public void cropButtonAction(View v) {
+        BitmapDrawable abmp = (BitmapDrawable) imageView.getDrawable();
         Bitmap bm = abmp.getBitmap();
 
         saveTempFile(bm);
@@ -971,17 +885,11 @@ public class UploadedPictureEdit extends AppCompatActivity {
 
         Intent intent = new Intent(this, cropActivity.class);
         intent.putExtra("imgurl", fileURI);
-        startActivityForResult(intent,CROP_ACTIVITY);
-
-
+        startActivityForResult(intent, CROP_ACTIVITY);
     }
 
-    public void rgbButtonAction(View v){
-
-        verifyStoragePermissions2(UploadedPictureEdit.this);
-
-        ImageView im = (ImageView) findViewById(R.id.imageView);
-        BitmapDrawable abmp = (BitmapDrawable) im.getDrawable();
+    public void rgbButtonAction(View v) {
+        BitmapDrawable abmp = (BitmapDrawable) imageView.getDrawable();
         Bitmap bm = abmp.getBitmap();
 
         saveTempFile(bm);
@@ -991,16 +899,11 @@ public class UploadedPictureEdit extends AppCompatActivity {
 
         Intent intent = new Intent(this, rgbActivity.class);
         intent.putExtra("imgurl", fileURI);
-        startActivityForResult(intent,RGB_ACTIVITY);
-
-
+        startActivityForResult(intent, RGB_ACTIVITY);
     }
-    public void contrastButtonAction(View v){
 
-        verifyStoragePermissions2(UploadedPictureEdit.this);
-
-        ImageView im = (ImageView) findViewById(R.id.imageView);
-        BitmapDrawable abmp = (BitmapDrawable) im.getDrawable();
+    public void contrastButtonAction(View v) {
+        BitmapDrawable abmp = (BitmapDrawable) imageView.getDrawable();
         Bitmap bm = abmp.getBitmap();
 
         saveTempFile(bm);
@@ -1010,16 +913,11 @@ public class UploadedPictureEdit extends AppCompatActivity {
 
         Intent intent = new Intent(this, contrastActivity.class);
         intent.putExtra("imgurl", fileURI);
-        startActivityForResult(intent,CONTRAST_ACTIVITY);
-
-
+        startActivityForResult(intent, CONTRAST_ACTIVITY);
     }
-    public void brightnessButtonAction(View v){
 
-        verifyStoragePermissions2(UploadedPictureEdit.this);
-
-        ImageView im = (ImageView) findViewById(R.id.imageView);
-        BitmapDrawable abmp = (BitmapDrawable) im.getDrawable();
+    public void brightnessButtonAction(View v) {
+        BitmapDrawable abmp = (BitmapDrawable) imageView.getDrawable();
         Bitmap bm = abmp.getBitmap();
 
         saveTempFile(bm);
@@ -1029,11 +927,10 @@ public class UploadedPictureEdit extends AppCompatActivity {
 
         Intent intent = new Intent(this, brightnessActivity.class);
         intent.putExtra("imgurl", fileURI);
-        startActivityForResult(intent,BRIGHTNESS_ACTIVITY);
-
-
+        startActivityForResult(intent, BRIGHTNESS_ACTIVITY);
     }
-    public void putTempFileInImageView(){
+
+    public void putTempFileInImageView() {
         File file = new File(Environment.getExternalStorageDirectory(), "NVImage/TempFile.jpg");
         Uri fileURI = Uri.fromFile(file);
 
@@ -1043,46 +940,43 @@ public class UploadedPictureEdit extends AppCompatActivity {
         file.delete();
 
     }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
             switch (requestCode) {
                 case CROP_ACTIVITY:
                     String whichCrop = data.getExtras().getString("whichCrop");
-                    Log.d("Crop :", whichCrop);
                     putTempFileInImageView();
+
                     currentCrop.delete(0, currentCrop.length());
                     currentCrop.append(whichCrop);
-                    Log.d("Crop :", currentCrop.toString());
-                    Element e = new Element(currentFilter, currentCrop,currentMirror,currentAngle,
-                            currentContrastRedValue,currentContrastGreenValue,currentContrastBlueValue,
-                            currentRgbRedValue,currentRgbGreenValue,currentRgbBlueValue,currentBrightness);
+
+                    Element e = new Element(currentFilter, currentCrop, currentMirror, currentAngle,
+                            currentContrastRedValue, currentContrastGreenValue, currentContrastBlueValue,
+                            currentRgbRedValue, currentRgbGreenValue, currentRgbBlueValue, currentBrightness);
 
                     checkSteps();
                     undoList.addLast(e);
 
-
-
                     currentStep++;
                     maximumSteps++;
                     break;
+
                 case RGB_ACTIVITY:
                     float[] whichRGB = data.getExtras().getFloatArray("whichRGB");
-                    Log.d("RGB:", Float.toString(whichRGB[0]) +' '+ Float.toString(whichRGB[1]) +' '+ Float.toString(whichRGB[2]));
                     putTempFileInImageView();
 
-                    currentRgbRedValue=whichRGB[0];
-                    currentRgbGreenValue=whichRGB[1];
-                    currentRgbBlueValue=whichRGB[2];
+                    currentRgbRedValue = whichRGB[0];
+                    currentRgbGreenValue = whichRGB[1];
+                    currentRgbBlueValue = whichRGB[2];
 
-                    Element el = new Element(currentFilter, currentCrop,currentMirror,currentAngle,
-                            currentContrastRedValue,currentContrastGreenValue,currentContrastBlueValue,
-                            currentRgbRedValue,currentRgbGreenValue,currentRgbBlueValue,currentBrightness);
+                    Element el = new Element(currentFilter, currentCrop, currentMirror, currentAngle,
+                            currentContrastRedValue, currentContrastGreenValue, currentContrastBlueValue,
+                            currentRgbRedValue, currentRgbGreenValue, currentRgbBlueValue, currentBrightness);
 
                     checkSteps();
                     undoList.addLast(el);
-
-
 
                     currentStep++;
                     maximumSteps++;
@@ -1090,40 +984,34 @@ public class UploadedPictureEdit extends AppCompatActivity {
 
                 case CONTRAST_ACTIVITY:
                     float[] whichContrast = data.getExtras().getFloatArray("whichContrast");
-                    Log.d("COntrast:", Float.toString(whichContrast[0]) +' '+ Float.toString(whichContrast[1]) +' '+ Float.toString(whichContrast[2]));
                     putTempFileInImageView();
 
-                    currentContrastRedValue=whichContrast[0];
-                    currentContrastGreenValue=whichContrast[1];
-                    currentContrastBlueValue=whichContrast[2];
+                    currentContrastRedValue = whichContrast[0];
+                    currentContrastGreenValue = whichContrast[1];
+                    currentContrastBlueValue = whichContrast[2];
 
-                    Element e2 = new Element(currentFilter, currentCrop,currentMirror,currentAngle,
-                            currentContrastRedValue,currentContrastGreenValue,currentContrastBlueValue,
-                            currentRgbRedValue,currentRgbGreenValue,currentRgbBlueValue,currentBrightness);
+                    Element e2 = new Element(currentFilter, currentCrop, currentMirror, currentAngle,
+                            currentContrastRedValue, currentContrastGreenValue, currentContrastBlueValue,
+                            currentRgbRedValue, currentRgbGreenValue, currentRgbBlueValue, currentBrightness);
 
                     checkSteps();
                     undoList.addLast(e2);
-
-
 
                     currentStep++;
                     maximumSteps++;
                     break;
                 case BRIGHTNESS_ACTIVITY:
                     int whichBRI = data.getExtras().getInt("whichBRI");
-                    Log.d("BRI :", Integer.toString(whichBRI));
                     putTempFileInImageView();
 
-                    currentBrightness=whichBRI;
+                    currentBrightness = whichBRI;
 
-                    Element e3 = new Element(currentFilter, currentCrop,currentMirror,currentAngle,
-                            currentContrastRedValue,currentContrastGreenValue,currentContrastBlueValue,
-                            currentRgbRedValue,currentRgbGreenValue,currentRgbBlueValue,currentBrightness);
+                    Element e3 = new Element(currentFilter, currentCrop, currentMirror, currentAngle,
+                            currentContrastRedValue, currentContrastGreenValue, currentContrastBlueValue,
+                            currentRgbRedValue, currentRgbGreenValue, currentRgbBlueValue, currentBrightness);
 
                     checkSteps();
                     undoList.addLast(e3);
-
-
 
                     currentStep++;
                     maximumSteps++;

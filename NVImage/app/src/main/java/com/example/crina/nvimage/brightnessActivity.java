@@ -24,30 +24,28 @@ import java.io.FileOutputStream;
 public class brightnessActivity extends AppCompatActivity {
 
     Bitmap original;
-    Bitmap operation;
-    int contrast;
-    ImageView img;
+    ImageView imageView;
 
     int brightness;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_brightness);
 
-        img = (ImageView) findViewById(R.id.imageView4);
+        imageView = (ImageView) findViewById(R.id.imageView4);
 
-        Bundle extras= getIntent().getExtras();
-        if(extras!=null)
-        {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
             Uri path = (Uri) extras.get("imgurl");
-            img.setImageURI(path);
+            imageView.setImageURI(path);
             File file = new File(Environment.getExternalStorageDirectory(), "NVImage/TempFile.jpg");
             file.delete();
         }
-        BitmapDrawable abmp = (BitmapDrawable) img.getDrawable();
+        BitmapDrawable abmp = (BitmapDrawable) imageView.getDrawable();
         original = abmp.getBitmap();
 
-        final SeekBar seekBarBrightness=(SeekBar) findViewById(R.id.seekBarBrightness);
+        final SeekBar seekBarBrightness = (SeekBar) findViewById(R.id.seekBarBrightness);
         seekBarBrightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar seekBarBrightness) {
@@ -60,21 +58,23 @@ public class brightnessActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onProgressChanged(SeekBar seekBarBrightness, int progress,boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBarBrightness, int progress, boolean fromUser) {
                 // TODO Auto-generated method stub
 
-                Log.d("SOMETHING", String.valueOf((progress-100)*(0.01f)));
-                brightness = progress-100;
+                Log.d("SOMETHING", String.valueOf((progress - 100) * (0.01f)));
+                brightness = progress - 100;
                 applyColorChange();
-            }});
+            }
+        });
     }
 
     public void applyColorChange() {
-        img.setImageBitmap(createFilteredBitmap(original, 1, 0, 0, 0, brightness,
+        imageView.setImageBitmap(createFilteredBitmap(original, 1, 0, 0, 0, brightness,
                 0, 1, 0, 0, brightness,
                 0, 0, 1, 0, brightness,
                 0, 0, 0, 1, 0));
     }
+
     private Bitmap createFilteredBitmap(Bitmap src, float a, float b, float c, float d, float e,
                                         float f, float g, float h, float i, float j,
                                         float k, float l, float m, float n, float o,
@@ -99,7 +99,8 @@ public class brightnessActivity extends AppCompatActivity {
 
         return bitmap;
     }
-    public void saveTempFile(Bitmap bm){
+
+    public void saveTempFile(Bitmap bm) {
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root + "/NVImage");
         myDir.mkdirs();
@@ -117,19 +118,21 @@ public class brightnessActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    public void okButtonAction(View view){
-        img = (ImageView) findViewById(R.id.imageView4);
-        BitmapDrawable abmp = (BitmapDrawable) img.getDrawable();
+
+    public void okButtonAction(View view) {
+        imageView = (ImageView) findViewById(R.id.imageView4);
+        BitmapDrawable abmp = (BitmapDrawable) imageView.getDrawable();
         Bitmap bmp = abmp.getBitmap();
 
         saveTempFile(bmp);
 
-        Intent intent = new Intent(this,UploadedPictureEdit.class);
-        intent.putExtra("whichBRI",brightness);
+        Intent intent = new Intent(this, UploadedPictureEdit.class);
+        intent.putExtra("whichBRI", brightness);
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
-    public void xButtonAction(View view){
+
+    public void xButtonAction(View view) {
         finish();
     }
 }
